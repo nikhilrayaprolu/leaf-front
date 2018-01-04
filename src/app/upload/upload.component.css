@@ -1,0 +1,41 @@
+.my-drop-zone { border: dotted 3px lightgray; }
+.nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
+.another-file-over-class { border: dotted 3px green; }
+
+html, body { height: 100%; }
+
+.suggestions {
+  font-family: Arial, sans-serif;
+  font-size: 17px;
+  margin-left: 2.4%;
+  display: block;
+}
+
+.query-suggestions:hover {
+  background: #E3E3E3;
+}
+
+.suggestion-box {
+  width: 634px;
+  max-width: 100%;
+  border: 1px solid rgba(150,150,150,0.3);
+  background-color: white;
+  margin-top: 47px;
+  margin-left: -1px;
+  position: absolute;
+}
+
+@media screen and (max-width: 767px) {
+  .suggestion-box {
+    width: 95.2vw;
+  }
+}
+
+@media screen and (max-width: 436px) {
+  .suggestion-box {
+    display: none;
+  }
+}
+a {
+  text-decoration: none;
+}

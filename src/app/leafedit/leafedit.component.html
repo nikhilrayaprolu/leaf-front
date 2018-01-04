@@ -1,0 +1,106 @@
+<div class = "container">
+  <h1>Leaf Edit</h1>
+  <form>
+    <button type="button" (click)="deleteleaf()" class="btn btn-danger">Delete</button>
+    <div class = "form-group">
+      <label for = "scientificName">Scientific Name</label>
+      <p><span *ngIf="presentedit != 1">{{leafvalues.scientificName}}</span>
+      <input type = "text" class = "form-control" id = "scientificName" required *ngIf="presentedit == 1"
+             [(ngModel)] = "leafvalues.scientificName" (keyup)="searchscientificName($event)" name = "scientificName">
+        <a (click)="editopen(1)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "commonName">Common Name</label>
+      <p><span *ngIf="presentedit != 2">{{leafvalues.commonName}}</span>
+      <input type = "text" class = "form-control" id = "commonName" required *ngIf="presentedit == 2"
+             [(ngModel)] = "leafvalues.commonName" (keyup)="searchcommonName($event)" name = "commonName">
+        <a (click)="editopen(2)">Edit</a></p>
+    </div>
+    <div *ngIf="autoresults">
+      Autocomplete Suggestions
+      <div *ngFor="let result of autoresults" class="query-suggestions" (click)="fillinfo(result)">
+        <a class="suggestions"> scientificName: {{result.scientificName}},commonName: {{result.commonName}} </a>
+      </div>
+    </div>
+    <div class = "form-group">
+      <label for = "pictureType">Picture Type</label>
+      <p><span *ngIf="presentedit != 3">{{leafvalues.pictureType}}</span>
+      <input type = "text" class = "form-control" id = "pictureType" required *ngIf="presentedit == 3"
+             [(ngModel)] = "leafvalues.pictureType" name = "pictureType">
+        <a (click)="editopen(3)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "leafShape">Leaf Shape</label>
+      <p><span *ngIf="presentedit != 4">{{leafvalues.leafShape}}</span>
+      <input type = "text" class = "form-control" id = "leafShape" required *ngIf="presentedit == 4"
+             [(ngModel)] = "leafvalues.leafShape" name = "leafShape">
+        <a (click)="editopen(4)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "leafMargin">Leaf Margin</label>
+      <p><span *ngIf="presentedit != 5">{{leafvalues.leafMargin}}</span>
+      <input type = "text" class = "form-control" id = "leafMargin" required *ngIf="presentedit == 5"
+             [(ngModel)] = "leafvalues.leafMargin" name = "leafMargin">
+        <a (click)="editopen(5)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "leafDivision">Leaf Division</label>
+      <p><span *ngIf="presentedit != 6">{{leafvalues.leafDivision}}</span>
+      <input type = "text" class = "form-control" id = "leafDivision" required *ngIf="presentedit == 6"
+             [(ngModel)] = "leafvalues.leafDivision" name = "leafDivision">
+        <a (click)="editopen(6)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "pictureSeason">Picture Season</label>
+      <p><span *ngIf="presentedit != 7">{{leafvalues.pictureSeason}}</span>
+      <input type = "text" class = "form-control" id = "pictureSeason" required *ngIf="presentedit == 7"
+             [(ngModel)] = "leafvalues.pictureSeason" name = "pictureSeason">
+        <a (click)="editopen(7)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "leafHealth">Leaf Health</label>
+      <p><span *ngIf="presentedit != 8">{{leafvalues.leafHealth}}</span>
+      <input type = "text" class = "form-control" id = "leafHealth" required *ngIf="presentedit == 8"
+             [(ngModel)] = "leafvalues.leafHealth" name = "leafHealth">
+        <a (click)="editopen(8)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "Disease">Disease</label>
+      <p><span *ngIf="presentedit != 9">{{leafvalues.Disease}}</span>
+      <input type = "text" class = "form-control" id = "Disease" required *ngIf="presentedit == 9"
+             [(ngModel)] = "leafvalues.Disease" name = "Disease">
+        <a (click)="editopen(9)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "Description">Description</label>
+      <p><span *ngIf="presentedit != 10">{{leafvalues.Description}}</span>
+      <input type = "text" class = "form-control" id = "Description" required *ngIf="presentedit == 10"
+             [(ngModel)] = "leafvalues.Description" name = "Description">
+        <a (click)="editopen(10)">Edit</a></p>
+    </div>
+    <div class = "form-group">
+      <label for = "AnnotationComplete">Annotation Complete</label>
+      <p><span *ngIf="presentedit != 1">{{leafvalues.AnnotationComplete}}</span>
+      <input type = "text" class = "form-control" id = "AnnotationComplete" required
+             [(ngModel)] = "leafvalues.AnnotationComplete" name = "AnnotationComplete">
+    </div>
+
+
+    <p>Annotation details
+      <input type="text" id="why" name="annote_area" class="form-control mr-sm-2" [(ngModel)]="leafvalues.annotationtext">
+      <br>
+      <br>
+      <img src="http://localhost:3002/{{leafvalues.leafname}}" id="blah"  width="200" height="200" class="annotatable" /><br>
+    <div id="submitBtn">
+      <button (click)="myFunction()" class="btn btn-outline-success my-2 my-sm-0"><span class="btn-text">Update Annotation</span></button>
+    </div>
+
+    <p>
+      <br>
+    <div id="submitBtn">
+      <button (click)="submitUpload()"><span class="btn-text">Submit Leaf</span></button>
+    </div>
+
+  </form>
+</div>
+
