@@ -14,6 +14,7 @@ export class UploadService {
   leavesoffamily = this.server + '/leavesoffamily';
   leafserver = this.server + '/leafbyid';
   deleteLeafServer = this.server + '/leafdelete';
+  dashboardServer = this.server + '/dashboard';
   constructor(
     private http: Http,
     private jsonp: Jsonp,
@@ -72,12 +73,18 @@ export class UploadService {
         return res.json();
       });
   }
-  getLeavesOfFamily(id, presentcount, count, annoted) {
+  getLeavesOfFamily(id, presentcount, count, annoted, userglobal) {
     if (!annoted) {
       annoted = false;
     }
     return this.http
-      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted}).map(res => {
+      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted, username: JSON.parse(localStorage.getItem('currentUser')).username, userglobal: userglobal }).map(res => {
+        return res.json();
+      });
+  }
+  getdashboardstats() {
+    return this.http
+      .post(this.dashboardServer, { username: JSON.parse(localStorage.getItem('currentUser')).username }).map(res => {
         return res.json();
       });
   }

@@ -22,14 +22,18 @@ export class LeafeditComponent implements OnInit {
     leafHealth: '',
     Disease: '',
     Description: '',
-    AnnotationComplete: '',
-    annotationtext: ''
+    AnnotationComplete: 'false',
+    annotationtext: '',
+    family: '',
+    Utility: '',
+    createduser: '',
+    lastedituser: '',
   };
   presentedit = 0;
-  constructor(private route: ActivatedRoute, private uploadservice: UploadService,private router: Router) {
+  constructor(private route: ActivatedRoute, private uploadservice: UploadService, private router: Router) {
 
   }
-  public deleteleaf(){
+  public deleteleaf() {
     this.uploadservice.deleteLeaf(this.leafid).subscribe(res => {
       this.router.navigate(['/']);
     });
@@ -42,6 +46,7 @@ export class LeafeditComponent implements OnInit {
     }
   }
   public submitUpload() {
+    this.leafvalues.lastedituser = JSON.parse(localStorage.getItem('currentUser')).username;
     this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
       this.router.navigate(['/']);
     });

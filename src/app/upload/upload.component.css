@@ -10,7 +10,10 @@ html, body { height: 100%; }
   margin-left: 2.4%;
   display: block;
 }
-
+input[type=file]{
+  width:90px;
+  color:transparent;
+}
 .query-suggestions:hover {
   background: #E3E3E3;
 }

@@ -6,16 +6,83 @@
     <div class="col-md-3">
       <h3>Select files</h3>
       Multiple
-      <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+      <input type="file" title=" " ng2FileSelect [uploader]="uploader" multiple  /><br/>
     </div>
+    <div class="col-md-9" style="margin-bottom: 40px">
 
+      <h3>Upload queue</h3>
+      <p>Queue length: {{ uploader?.queue?.length }}</p>
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th width="50%">Name</th>
+          <th>Size</th>
+          <th>Progress</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of uploader.queue">
+          <td><strong>{{ item?.file?.name }}</strong></td>
+          <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+          <td *ngIf="uploader.isHTML5">
+            <div class="progress" style="margin-bottom: 0;">
+              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+            </div>
+          </td>
+          <td class="text-center">
+            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+          </td>
+          <td nowrap>
+            <button type="button" class="btn btn-success btn-xs"
+                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+              <span class="glyphicon glyphicon-upload"></span> Upload
+            </button>
+            <button type="button" class="btn btn-warning btn-xs"
+                    (click)="item.cancel()" [disabled]="!item.isUploading">
+              <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+            </button>
+            <button type="button" class="btn btn-danger btn-xs"
+                    (click)="item.remove()">
+              <span class="glyphicon glyphicon-trash"></span> Remove
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <div>
+        <div>
+          Queue progress:
+          <div class="progress" style="">
+            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success btn-s"
+                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+          <span class="glyphicon glyphicon-upload"></span> Upload all
+        </button>
+        <button type="button" class="btn btn-warning btn-s"
+                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+        </button>
+        <button type="button" class="btn btn-danger btn-s"
+                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+          <span class="glyphicon glyphicon-trash"></span> Remove all
+        </button>
+      </div>
+    </div>
   </div>
 
 </div>
 
 <div class = "container">
   <h1>Leaf Upload</h1>
-  <form>
+  <form ngNativeValidate>
     <div class = "form-group">
       <label for = "scientificName">Scientific Name</label>
       <input type = "text" class = "form-control" id = "scientificName" required
@@ -26,43 +93,96 @@
       <input type = "text" class = "form-control" id = "commonName" required
              [(ngModel)] = "leafvalues.commonName" (keyup)="searchcommonName($event)" name = "commonName">
     </div>
+    <div class = "form-group">
+      <label for = "family">Family</label>
+      <input type = "text" class = "form-control" id = "family"
+             [(ngModel)] = "leafvalues.family" name = "family">
+    </div>
     <div *ngIf="autoresults">
       Autocomplete Suggestions
       <div *ngFor="let result of autoresults" class="query-suggestions" (click)="fillinfo(result)">
         <a class="suggestions"> scientificName: {{result.scientificName}},commonName: {{result.commonName}} </a>
       </div>
     </div>
-    <div class = "form-group">
-      <label for = "pictureType">Picture Type</label>
-      <input type = "text" class = "form-control" id = "pictureType" required
-             [(ngModel)] = "leafvalues.pictureType" name = "pictureType">
+    <div class="form-group">
+      <label>Picture Type</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required>
+          <option value="Level0">Level 0</option>
+          <option value="Level1">Level 1</option>
+          <option value="Level2">Level 2</option>
+          <option value="Level3">Level 3</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
-      <label for = "leafShape">Leaf Shape</label>
-      <input type = "text" class = "form-control" id = "leafShape" required
-             [(ngModel)] = "leafvalues.leafShape" name = "leafShape">
+    <div class="form-group">
+      <label>Shape:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.leafShape" name="leafShape" required>
+          <option value="Ovate">Ovate</option>
+          <option value="Obovate">Obovate</option>
+          <option value="Lanceolate">Lanceolate</option>
+          <option value="Oblanceolate">Oblanceolate</option>
+          <option value="Cordate">Cordate</option>
+          <option value="Obcordate">Obcordate</option>
+          <option value="Elliptical">Elliptical</option>
+          <option value="Oblong">Oblong</option>
+          <option value="Cuneate">Cuneate</option>
+          <option value="Linear">Linear</option>
+          <option value="Peltate">Peltate</option>
+          <option value="Spatulate">Spatulate</option>
+          <option value="Reniform">Reniform</option>
+          <option value="Hastate">Hastate</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
-      <label for = "leafMargin">Leaf Margin</label>
-      <input type = "text" class = "form-control" id = "leafMargin" required
-             [(ngModel)] = "leafvalues.leafMargin" name = "leafMargin">
+    <div class="form-group">
+      <label>Leaf Margin</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="completed" [(ngModel)] = "leafvalues.leafMargin">
+          <option value="Entire">Entire</option>
+          <option value="Dentate">Dentate</option>
+          <option value="Serrate">Serrate</option>
+          <option value="Incised">Incised</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
-      <label for = "leafDivision">Leaf Division</label>
-      <input type = "text" class = "form-control" id = "leafDivision" required
-             [(ngModel)] = "leafvalues.leafDivision" name = "leafDivision">
+    <div class="form-group">
+      <label>Leaf Division:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="division" [(ngModel)] = "leafvalues.leafDivision">
+          <option value="Simple">Simple</option>
+          <option value="Compound (Pinnate) Bipennate">Compound (Pinnate) Bipennate</option>
+          <option value="Compound (Pinnate) Tripennate">Compound (Pinnate) Tripennate</option>
+          <option value="Compound (Pinnate) Decompund">Compound (Pinnate) Decompund</option>
+          <option value="Compound (Palmate) Unifoliate">Compound (Palmate) Unifoliate</option>
+          <option value="Compound (Palmate) Bifoliate">Compound (Palmate) Bifoliate</option>
+          <option value="Compound (Palmate) Trifoliate">Compound (Palmate) Trifoliate</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
-      <label for = "pictureSeason">Picture Season</label>
-      <input type = "text" class = "form-control" id = "pictureSeason" required
-             [(ngModel)] = "leafvalues.pictureSeason" name = "pictureSeason">
+    <div class="form-group">
+      <label>Season:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="season" [(ngModel)] = "leafvalues.pictureSeason">
+          <option value="Spring">Spring</option>
+          <option value="Summer">Summer</option>
+          <option value="Monsoon">Monsoon</option>
+          <option value="Autumn">Autumn</option>
+          <option value="Winter">Winter</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
-      <label for = "leafHealth">Leaf Health</label>
-      <input type = "text" class = "form-control" id = "leafHealth" required
-             [(ngModel)] = "leafvalues.leafHealth" name = "leafHealth">
+    <div class="form-group">
+      <label>Leaf Health:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="health" [(ngModel)] = "leafvalues.leafHealth">
+          <option value="Good">Good</option>
+          <option value="Not Good">Not Good</option>
+        </select>
+      </div>
     </div>
-    <div class = "form-group">
+    <div class = "form-group" *ngIf="leafvalues.leafHealth == 'Not Good'">
       <label for = "Disease">Disease</label>
       <input type = "text" class = "form-control" id = "Disease" required
              [(ngModel)] = "leafvalues.Disease" name = "Disease">
@@ -73,82 +193,24 @@
              [(ngModel)] = "leafvalues.Description" name = "Description">
     </div>
     <div class = "form-group">
-      <label for = "AnnotationComplete">Annotation Complete</label>
-      <input type = "text" class = "form-control" id = "AnnotationComplete" required
-             [(ngModel)] = "leafvalues.AnnotationComplete" name = "AnnotationComplete">
+      <label for = "Utility">Utility</label>
+      <input type = "text" class = "form-control" id = "Utility" required
+             [(ngModel)] = "leafvalues.Utility" name = "Utility">
+    </div>
+    <div class="form-group">
+      <label>Annotation Complete:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete">
+          <option value="true">yes</option>
+          <option value="false">no</option>
+        </select>
+      </div>
     </div>
     <div id="submitBtn">
       <button (click)="submitUpload()"><span class="btn-text">Submit Leaf</span></button>
     </div>
   </form>
 
-  <div class="col-md-9" style="margin-bottom: 40px">
 
-    <h3>Upload queue</h3>
-    <p>Queue length: {{ uploader?.queue?.length }}</p>
-
-    <table class="table">
-      <thead>
-      <tr>
-        <th width="50%">Name</th>
-        <th>Size</th>
-        <th>Progress</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let item of uploader.queue">
-        <td><strong>{{ item?.file?.name }}</strong></td>
-        <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-        <td *ngIf="uploader.isHTML5">
-          <div class="progress" style="margin-bottom: 0;">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-          </div>
-        </td>
-        <td class="text-center">
-          <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-          <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-          <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-        </td>
-        <td nowrap>
-          <button type="button" class="btn btn-success btn-xs"
-                  (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-            <span class="glyphicon glyphicon-upload"></span> Upload
-          </button>
-          <button type="button" class="btn btn-warning btn-xs"
-                  (click)="item.cancel()" [disabled]="!item.isUploading">
-            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-          </button>
-          <button type="button" class="btn btn-danger btn-xs"
-                  (click)="item.remove()">
-            <span class="glyphicon glyphicon-trash"></span> Remove
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <div>
-      <div>
-        Queue progress:
-        <div class="progress" style="">
-          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-        </div>
-      </div>
-      <button type="button" class="btn btn-success btn-s"
-              (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-        <span class="glyphicon glyphicon-upload"></span> Upload all
-      </button>
-      <button type="button" class="btn btn-warning btn-s"
-              (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-        <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-      </button>
-      <button type="button" class="btn btn-danger btn-s"
-              (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-        <span class="glyphicon glyphicon-trash"></span> Remove all
-      </button>
-    </div>
-  </div>
 </div>
 

@@ -3,7 +3,7 @@ import {FileUploader, FileSelectDirective, FileDropDirective} from 'ng2-file-upl
 import {UploadService} from '../services/upload.service';
 import {Router} from '@angular/router';
 const URL = 'http://localhost:3002/api';
-
+declare var $: any;
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -13,18 +13,23 @@ export class UploadComponent implements OnInit {
   leafvalues: any = {
     scientificName: '',
     commonName: '',
-    pictureType: '',
-    leafShape: '',
-    leafMargin: '',
-    leafDivision: '',
-    pictureSeason: '',
-    leafHealth: '',
+    pictureType: 'Level0',
+    leafShape: 'Ovate',
+    leafMargin: 'Entire',
+    leafDivision: 'Simple',
+    pictureSeason: 'Spring',
+    leafHealth: 'Good',
     Disease: '',
     Description: '',
-    AnnotationComplete: '',
+    AnnotationComplete: 'false',
+    Utility: '',
     listofimages: [],
-    annotationtext: ''
+    annotationtext: '',
+    family: '',
+    createduser: '',
+    lastedituser: '',
   };
+  fillallfields = 0;
   autoresults: any;
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
@@ -39,9 +44,16 @@ export class UploadComponent implements OnInit {
   }
 
   public submitUpload() {
-    this.uploadService.startUploadJob(this.leafvalues).subscribe(res => {
-      this.router.navigate(['/']);
-    });
+    this.leafvalues.createduser = JSON.parse(localStorage.getItem('currentUser')).username;
+    if(this.leafvalues.scientificName == '' || this.leafvalues.commonName == '' || !this.leafvalues.pictureType || !this.leafvalues.pictureSeason || !this.leafvalues.AnnotationComplete){
+      this.fillallfields = 1;
+    }
+    else{
+      this.uploadService.startUploadJob(this.leafvalues).subscribe(res => {
+        this.router.navigate(['/']);
+      });
+    }
+
   }
   public searchscientificName($event) {
     this.uploadService.getFamilyByScientificName(this.leafvalues.scientificName).subscribe(res => {

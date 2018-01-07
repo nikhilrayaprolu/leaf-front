@@ -10,8 +10,12 @@
         </li>
       </ul>
     </nav>
-    <div class="col-sm-3 col-md-2">
-    <table class="table" *ngIf="showleaftypes==1">
+    <div class="col-sm-3 col-md-2" *ngIf="showleaftypes!=0">
+      <select class="selectpicker form-control" name="season" [(ngModel)] = "userglobal">
+        <option value="User"> User </option>
+        <option value="Global"> Global </option>
+      </select>
+    <table class="table" *ngIf="showleaftypes!=0">
       <thead>
       <tr>
         <th>Leaf Scientific Name</th>
@@ -41,26 +45,32 @@
       <h1>Dashboard</h1>
       <section class="row text-center placeholders">
         <div class="col-6 col-sm-3 placeholder">
-          <a href="http://localhost:3000/">
-            <img src="https://i.imgur.com/Z4KWPmh.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" > </a>
+            <img src="https://i.imgur.com/Z4KWPmh.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Total Number of leaves</h4>
+          <p>{{dashboardstatistics.familycount}}</p>
         </div>
         <div class="col-6 col-sm-3 placeholder">
-          <a href='http://localhost:3000/annotated'>
-            <img src="https://i.imgur.com/YZwivHa.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail"> </a>
+            <img src="https://i.imgur.com/YZwivHa.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Total Annotated Leaves</h4>
+          <p>{{dashboardstatistics.annotated}}</p>
           <span class="text-muted"></span>
         </div>
         <div class="col-6 col-sm-3 placeholder">
-          <a href='http://localhost:3000/notannotated'>
-            <img src="https://i.imgur.com/GTzwx0J.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail"> </a>
+            <img src="https://i.imgur.com/GTzwx0J.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Partially annotated leaves</h4>
+          <p>{{dashboardstatistics.unannotated}}</p>
           <span class="text-muted"></span>
         </div>
         <div class="col-6 col-sm-3 placeholder">
-          <a href='http://localhost:3000/myleaves'>
-            <img src="https://i.imgur.com/1yvXEz9.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail"> </a>
+          <img src="https://i.imgur.com/GTzwx0J.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+          <h4>Diseased leaves</h4>
+          <p>{{dashboardstatistics.diseased}}</p>
+          <span class="text-muted"></span>
+        </div>
+        <div class="col-6 col-sm-3 placeholder">
+            <img src="https://i.imgur.com/1yvXEz9.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>My leaves</h4>
+          <p>{{dashboardstatistics.userleaves}}</p>
           <span class="text-muted"></span>
         </div>
       </section>
