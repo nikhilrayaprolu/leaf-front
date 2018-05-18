@@ -34,17 +34,12 @@
           </td>
           <td class="text-center">
             <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-            <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
             <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
           </td>
           <td nowrap>
             <button type="button" class="btn btn-success btn-xs"
                     (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
               <span class="glyphicon glyphicon-upload"></span> Upload
-            </button>
-            <button type="button" class="btn btn-warning btn-xs"
-                    (click)="item.cancel()" [disabled]="!item.isUploading">
-              <span class="glyphicon glyphicon-ban-circle"></span> Cancel
             </button>
             <button type="button" class="btn btn-danger btn-xs"
                     (click)="item.remove()">
@@ -66,10 +61,6 @@
                 (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
           <span class="glyphicon glyphicon-upload"></span> Upload all
         </button>
-        <button type="button" class="btn btn-warning btn-s"
-                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-        </button>
         <button type="button" class="btn btn-danger btn-s"
                 (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
           <span class="glyphicon glyphicon-trash"></span> Remove all
@@ -82,6 +73,7 @@
 
 <div class = "container">
   <h1>Leaf Upload</h1>
+  <div class="col-md-6">
   <form ngNativeValidate>
     <div class = "form-group">
       <label for = "scientificName">Scientific Name</label>
@@ -206,11 +198,21 @@
         </select>
       </div>
     </div>
+    <div class="form-group">
+      <label>Tagging Complete:</label>
+      <div class="input-group">
+        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.TaggingComplete">
+          <option value="true">yes</option>
+          <option value="false">no</option>
+        </select>
+      </div>
+    </div>
     <div id="submitBtn">
-      <button (click)="submitUpload()"><span class="btn-text">Submit Leaf</span></button>
+      <button (click)="submitUpload()" class="btn btn-danger"><span class="btn-text">Submit Leaf</span></button>
     </div>
   </form>
 
-
 </div>
+</div>
+
 

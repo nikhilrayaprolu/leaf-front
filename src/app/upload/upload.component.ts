@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FileUploader, FileSelectDirective, FileDropDirective} from 'ng2-file-upload';
 import {UploadService} from '../services/upload.service';
 import {Router} from '@angular/router';
-const URL = 'http://localhost:3002/api';
+import {server} from "../config";
+const URL = server + '/api';
 declare var $: any;
 @Component({
   selector: 'app-upload',
@@ -28,6 +29,7 @@ export class UploadComponent implements OnInit {
     family: '',
     createduser: '',
     lastedituser: '',
+    TaggingComplete: 'false',
   };
   fillallfields = 0;
   autoresults: any;
@@ -47,10 +49,14 @@ export class UploadComponent implements OnInit {
     this.leafvalues.createduser = JSON.parse(localStorage.getItem('currentUser')).username;
     if(this.leafvalues.scientificName == '' || this.leafvalues.commonName == '' || !this.leafvalues.pictureType || !this.leafvalues.pictureSeason || !this.leafvalues.AnnotationComplete){
       this.fillallfields = 1;
-    }
-    else{
+    } else {
       this.uploadService.startUploadJob(this.leafvalues).subscribe(res => {
-        this.router.navigate(['/']);
+        if(res && res.oneleafid){
+          this.router.navigate(['/leafedit', res.oneleafid]);
+    } else {
+          this.router.navigate(['/'],{ queryParams: {present: 1, imageid: res.imageid, usertype: 'Global',level:'All', annotation:'All', disease:'All'}});
+        }
+
       });
     }
 

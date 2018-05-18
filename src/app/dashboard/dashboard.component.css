@@ -3,7 +3,9 @@
 .another-file-over-class { border: dotted 3px green; }
 
 html, body { height: 100%; }
-
+.pointer {
+  cursor: pointer;
+}
 .suggestions {
   font-family: Arial, sans-serif;
   font-size: 17px;
@@ -44,11 +46,18 @@ a {
   margin-bottom: 10px;
   margin-left: 5px;
   cursor: pointer;
+  position:relative;
 }
 .item img {
   max-width: 100%;
   max-height: 100%;
   vertical-align: bottom;
+}
+.item a {
+  position:absolute;
+  bottom:5px;
+  background:blue;
+  color:#FFF;
 }
 .image-viewer {
   height: 400px;
@@ -56,4 +65,61 @@ a {
   position: relative;
   width: 100%;
   text-align: center
+}
+.card {
+  font-size: 1em;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+  width: 300px;
+  height: 300px;
+  border-radius: .28571429rem;
+  box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+  display: inline-block;
+  float: left;
+}
+
+.card-block {
+  font-size: 1em;
+  position: relative;
+  margin: 0;
+  padding: 1em;
+  border: none;
+  border-top: 1px solid rgba(34, 36, 38, .1);
+  box-shadow: none;
+}
+
+.card-img-top {
+  display: block;
+  max-width: 100%;
+  max-height: 250px;
+  margin: auto;
+}
+
+.card-title {
+  font-size: 1.28571429em;
+  font-weight: 700;
+  line-height: 1.2857em;
+}
+
+.card-text {
+  clear: both;
+  margin-top: .5em;
+  color: rgba(0, 0, 0, .68);
+}
+
+.card-footer {
+  font-size: 1em;
+  position: static;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  padding: .75em 1em;
+  color: rgba(0, 0, 0, .4);
+  border-top: 1px solid rgba(0, 0, 0, .05) !important;
+  background: #fff;
+}
+
+.card-inverse .btn {
+  border: 1px solid rgba(0, 0, 0, .05);
 }

@@ -1,21 +1,56 @@
 <div class="container">
   <div class="row">
-    <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-      <ul class="nav nav-pills flex-column">
-        <li class="nav-item">
-          <a class="nav-link" (click)="getAllFamily()">View Leaf Types</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="getAllUnAnnoted()">UnAnnotated Leaf list</a>
-        </li>
-      </ul>
-    </nav>
-    <div class="col-sm-3 col-md-2" *ngIf="showleaftypes!=0">
-      <select class="selectpicker form-control" name="season" [(ngModel)] = "userglobal">
+    <div class="row" *ngIf="showleaftypes!=0">
+      <div class="col-md-3">
+      <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "userglobal" (change)="getAllFamily(showleaftypes)">
         <option value="User"> User </option>
         <option value="Global"> Global </option>
       </select>
-    <table class="table" *ngIf="showleaftypes!=0">
+      </div>
+      <div class="col-md-3">
+      <select class="selectpicker form-control col-md-3" name="level" [(ngModel)] = "searchdata.level" (change)="getAllFamily(showleaftypes)">
+        <option value="All">Level All </option>
+        <option value="Level0">Level 0 </option>
+        <option value="Level1">Level 1 </option>
+        <option value="Level2">Level 2 </option>
+        <option value="Level3">Level 3 </option>
+      </select>
+      </div>
+      <div class="col-md-3">
+
+      <select class="selectpicker form-control col-md-3" name="disease" [(ngModel)] = "searchdata.disease" (change)="getAllFamily(showleaftypes)">
+        <option value="All">Disease All </option>
+        <option value="Good">Disease Yes </option>
+        <option value="Not Good">Disease No </option>
+      </select>
+      </div>
+      <div class="col-md-3">
+
+      <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.annotation" (change)="getAllFamily(showleaftypes)">
+        <option value="All">Annotation All </option>
+        <option value="true">Annotation Yes </option>
+        <option value="false">Annotation No </option>
+      </select>
+      </div>
+      <div class="col-md-3">
+
+        <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.tagging" (change)="getAllFamily(showleaftypes)">
+          <option value="All">Tagging All </option>
+          <option value="true">Tagging Yes </option>
+          <option value="false">Tagging No </option>
+        </select>
+      </div>
+      </div>
+    <div  *ngIf="showleaftypes == 2">
+      <div *ngFor="let item of family;let i = index">
+        <div class="item" (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
+          <img [src]='server + "/" + item.leaves[0].leafname' height="200px" width="200px" [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+          <h5><b>{{item.scientificName}}</b></h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 col-md-2" *ngIf="showleaftypes==1">
+    <table class="table" *ngIf="showleaftypes==1">
       <thead>
       <tr>
         <th>Leaf Scientific Name</th>
@@ -28,50 +63,153 @@
       </tbody>
     </table>
     </div>
-    <div class="col-sm-7 col-md-7">
+    <div class="col-sm-7 col-md-7" *ngIf="showleaftypes==1">
       <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       </div>
-      <div >
+
         <div *ngFor="let item of items;let i = index">
-          <div class="item" (click)="imageprofile(i)">
-            <img src="http://localhost:3002/{{item.leafname}}" height="200px" [ngClass]="'image'+i" >
+          <div class="card card-inverse card-info">
+            <img [src]='server + "/" + item.leafname' height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+            <div class="card-footer">
+              <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin()">Annotate</button>
+              <button (click)="imageprofile(i)" *ngIf="checkuserloggedin()">Edit</button>
+              <button  (click)="imageprofile(i)" *ngIf="!checkuserloggedin()">View</button>
+              <button  (click)="savepresentannotation()" *ngIf="presentimageannotated == i && checkuserloggedin()">AnnotationComplete</button>
+            </div>
           </div>
         </div>
+    </div>
 
-      </div>
+
+    <div class="col-sm-3 col-sm-3" *ngIf="showleaftypes == 1">
+      <form ngNativeValidate  *ngIf="family && family[presentleaf]">
+        <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
+        <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Edit</button>
+        <button type="button" (click)="savefamily()" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Save</button>
+        <div class = "form-group">
+          <label for = "scientificName">Scientific Name</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].scientificName}}</span>
+            <input type = "text" class = "form-control" id = "scientificName" required *ngIf="presentedit == 0"
+                   [(ngModel)] = "family[0].scientificName" (keyup)="searchscientificName($event)" name = "scientificName">
+        </div>
+        <div class = "form-group">
+          <label for = "commonName">Common Name</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].commonName}}</span>
+            <input type = "text" class = "form-control" id = "commonName" required *ngIf="presentedit == 0"
+                   [(ngModel)] = "family[presentleaf].commonName" (keyup)="searchcommonName($event)" name = "commonName">
+
+        </div>
+        <div class="form-group">
+          <label>Shape:</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafShape}}</span>
+            <select class="selectpicker form-control" [(ngModel)] = "family[presentleaf].leafShape" name="leafShape" required *ngIf="presentedit == 0">
+              <option value="Ovate">Ovate</option>
+              <option value="Obovate">Obovate</option>
+              <option value="Lanceolate">Lanceolate</option>
+              <option value="Oblanceolate">Oblanceolate</option>
+              <option value="Cordate">Cordate</option>
+              <option value="Obcordate">Obcordate</option>
+              <option value="Elliptical">Elliptical</option>
+              <option value="Oblong">Oblong</option>
+              <option value="Cuneate">Cuneate</option>
+              <option value="Linear">Linear</option>
+              <option value="Peltate">Peltate</option>
+              <option value="Spatulate">Spatulate</option>
+              <option value="Reniform">Reniform</option>
+              <option value="Hastate">Hastate</option>
+            </select>
+          </p>
+        </div>
+        <div class="form-group" *ngIf="family && family.length">
+          <label>Leaf Margin</label>
+          <p><span *ngIf="presentedit ==1">{{family[presentleaf].leafMargin}}</span>
+
+            <select class="selectpicker form-control" name="completed" [(ngModel)] = "family[(presentleaf)].leafMargin" *ngIf="presentedit == 0">
+              <option value="Entire">Entire</option>
+              <option value="Dentate">Dentate</option>
+              <option value="Serrate">Serrate</option>
+              <option value="Incised">Incised</option>
+            </select>
+          </p>
+        </div>
+        <div class="form-group">
+          <label>Leaf Division:</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafDivision}}</span>
+            <select class="selectpicker form-control" name="division" [(ngModel)] = "family[presentleaf].leafDivision" *ngIf="presentedit == 0">
+              <option value="Simple">Simple</option>
+              <option value="Compound (Pinnate) Bipennate">Compound (Pinnate) Bipennate</option>
+              <option value="Compound (Pinnate) Tripennate">Compound (Pinnate) Tripennate</option>
+              <option value="Compound (Pinnate) Decompund">Compound (Pinnate) Decompund</option>
+              <option value="Compound (Palmate) Unifoliate">Compound (Palmate) Unifoliate</option>
+              <option value="Compound (Palmate) Bifoliate">Compound (Palmate) Bifoliate</option>
+              <option value="Compound (Palmate) Trifoliate">Compound (Palmate) Trifoliate</option>
+            </select>
+          </p>
+        </div>
+        <div class = "form-group">
+          <label for = "Description">Description</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].Description}}</span>
+            <input type = "text" class = "form-control" id = "Description" required *ngIf="presentedit == 0"
+                   [(ngModel)] = "family[presentleaf].Description" name = "Description">
+            </p>
+        </div>
+        <div class = "form-group">
+          <label for = "family">Family</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].family}}</span>
+            <input type = "text" class = "form-control" id = "family"
+                   [(ngModel)] = "family[presentleaf].family" name = "family" *ngIf="presentedit == 0">
+            </p>
+        </div>
+        <div class = "form-group">
+          <label for = "Utility">Utility</label>
+          <p><span *ngIf="presentedit == 1">{{family[presentleaf].Utility}}</span>
+            <input type = "text" class = "form-control" id = "Utility"
+                   [(ngModel)] = "family[presentleaf].Utility" name = "Utility" *ngIf="presentedit == 0">
+            </p>
+        </div>
+      </form>
     </div>
     <div *ngIf="showleaftypes==0">
     <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
       <h1>Dashboard</h1>
       <section class="row text-center placeholders">
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="https://i.imgur.com/Z4KWPmh.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail" >
+        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllFamily(2)" >
+          <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail">
+          <h4>Catalogue</h4>
+        </div>
+        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)" >
+          <img src="https://imgur.com/download/twhrM1d" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
+          <h4>Tag New Images</h4>
+        </div>
+        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)">
+          <img src="http://www.averusa.com/classroom-technology/assets/img/myndshare/icon-pen.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
+          <h4>Annotate New Images</h4>
+        </div>
+        <div class="col-sm-3">
+        <div>
           <h4>Total Number of leaves</h4>
           <p>{{dashboardstatistics.familycount}}</p>
         </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="https://i.imgur.com/YZwivHa.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+        <div>
           <h4>Total Annotated Leaves</h4>
           <p>{{dashboardstatistics.annotated}}</p>
           <span class="text-muted"></span>
         </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="https://i.imgur.com/GTzwx0J.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+        <div>
           <h4>Partially annotated leaves</h4>
           <p>{{dashboardstatistics.unannotated}}</p>
           <span class="text-muted"></span>
         </div>
-        <div class="col-6 col-sm-3 placeholder">
-          <img src="https://i.imgur.com/GTzwx0J.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+        <div>
           <h4>Diseased leaves</h4>
           <p>{{dashboardstatistics.diseased}}</p>
           <span class="text-muted"></span>
         </div>
-        <div class="col-6 col-sm-3 placeholder">
-            <img src="https://i.imgur.com/1yvXEz9.jpg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+        <div>
           <h4>My leaves</h4>
           <p>{{dashboardstatistics.userleaves}}</p>
           <span class="text-muted"></span>
+        </div>
         </div>
       </section>
     </main>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {UploadService} from '../services/upload.service';
+import {server} from "../config";
+import {AuthenticationService} from "../services/authentication.service";
 declare var anno: any;
 @Component({
   selector: 'app-leafedit',
@@ -8,6 +10,7 @@ declare var anno: any;
   styleUrls: ['./leafedit.component.css']
 })
 export class LeafeditComponent implements OnInit {
+  server = server;
   leafid: number;
   leafdata: any;
   autoresults: any;
@@ -28,15 +31,19 @@ export class LeafeditComponent implements OnInit {
     Utility: '',
     createduser: '',
     lastedituser: '',
+    TaggingComplete: 'false'
   };
   presentedit = 0;
-  constructor(private route: ActivatedRoute, private uploadservice: UploadService, private router: Router) {
+  constructor(private route: ActivatedRoute, private uploadservice: UploadService, private router: Router, private authentication: AuthenticationService) {
 
   }
   public deleteleaf() {
     this.uploadservice.deleteLeaf(this.leafid).subscribe(res => {
       this.router.navigate(['/']);
     });
+  }
+  public checkuserloggedin() {
+    return this.authentication.checkuserloggedin();
   }
   public editopen(num) {
     if (this.presentedit === num) {
@@ -60,6 +67,7 @@ export class LeafeditComponent implements OnInit {
     this.uploadservice.getFamilyByCommonName(this.leafvalues.commonName).subscribe(res => {
       this.autoresults = res;
 
+
     });
   }
 
@@ -78,8 +86,11 @@ export class LeafeditComponent implements OnInit {
       this.leafid = params['id'];
       this.uploadservice.getLeafById(this.leafid).subscribe(res => {
         this.leafvalues = res;
+        this.leafvalues.AnnotationComplete = this.leafvalues.AnnotationComplete.toString();
+
       });
     });
+    anno.makeAnnotatable(document.getElementById('blah'));
   }
   myFunction() {
     let ans = '';

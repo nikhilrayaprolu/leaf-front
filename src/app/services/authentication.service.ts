@@ -3,16 +3,24 @@ import { Http, Headers, Response } from '@angular/http';
 
 import 'rxjs/add/operator/map';
 import {Observable} from "rxjs/Observable";
+import {server} from "../config";
 
 @Injectable()
 export class AuthenticationService {
   public token: string;
-  server = 'http://localhost:3002';
+  server = server;
   constructor(private http: Http) {
     // set token if saved in local storage
 
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
+  }
+  checkuserloggedin() {
+    if (this.token) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   login(username: string, password: string): Observable<boolean> {

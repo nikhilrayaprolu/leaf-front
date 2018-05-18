@@ -1,10 +1,14 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">DashBoard</a>
+      <a class="navbar-brand" href="#">LeafNet</a>
     </div>
     <ul class="nav navbar-nav">
       <li><a [routerLink]="['upload']">Upload</a></li>
+    </ul>
+    <ul class="nav navbar-nav" style="float: right">
+      <li><a [routerLink]="['login']" (click)="logout()" *ngIf="checkloggedin()">Logout</a></li>
+      <li><a [routerLink]="['login']" *ngIf="!checkloggedin()">Login</a></li>
     </ul>
   </div>
 </nav>

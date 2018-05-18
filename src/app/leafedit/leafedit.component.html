@@ -1,31 +1,51 @@
 <div class = "container">
   <h1>Leaf Edit</h1>
+
   <form ngNativeValidate>
-    <button type="button" (click)="deleteleaf()" class="btn btn-danger">Delete</button>
+    <button type="button" (click)="presentedit = 1" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Edit</button>
+    <button type="button" (click)="presentedit = 0 && submitUpload()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Save</button>
+
+    <button type="button" (click)="deleteleaf()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
     <div class = "form-group">
-      <label for = "scientificName">Scientific Name</label>
-      <p><span *ngIf="presentedit != 1">{{leafvalues.scientificName}}</span>
-      <input type = "text" class = "form-control" id = "scientificName" required *ngIf="presentedit == 1"
-             [(ngModel)] = "leafvalues.scientificName" (keyup)="searchscientificName($event)" name = "scientificName">
-        <a (click)="editopen(1)">Edit</a></p>
+      <label >Scientific Name</label>
+      <p><span>{{leafvalues.scientificName}}</span>
     </div>
     <div class = "form-group">
-      <label for = "commonName">Common Name</label>
-      <p><span *ngIf="presentedit != 2">{{leafvalues.commonName}}</span>
-      <input type = "text" class = "form-control" id = "commonName" required *ngIf="presentedit == 2"
-             [(ngModel)] = "leafvalues.commonName" (keyup)="searchcommonName($event)" name = "commonName">
-        <a (click)="editopen(2)">Edit</a></p>
+      <label>Common Name</label>
+      <p><span>{{leafvalues.commonName}}</span>
     </div>
-    <div *ngIf="autoresults">
-      Autocomplete Suggestions
-      <div *ngFor="let result of autoresults" class="query-suggestions" (click)="fillinfo(result)">
-        <a class="suggestions"> scientificName: {{result.scientificName}},commonName: {{result.commonName}} </a>
-      </div>
+    <div class = "form-group">
+      <label>Family</label>
+      <p><span>{{leafvalues.family}}</span>
+
+    </div>
+    <div class = "form-group">
+      <label>Utility</label>
+      <p><span>{{leafvalues.Utility}}</span>
+    </div>
+    <div class="form-group">
+      <label>Leaf Margin</label>
+      <p><span>{{leafvalues.leafMargin}}</span>
+
+    </div>
+    <div class="form-group">
+      <label>Leaf Division:</label>
+      <p><span>{{leafvalues.leafDivision}}</span>
+    </div>
+    <div class = "form-group">
+      <label>Description</label>
+      <p><span>{{leafvalues.Description}}</span>
+    </div>
+    <div class="form-group">
+      <label>Shape:</label>
+      <p><span>{{leafvalues.leafShape}}</span>
+
+
     </div>
     <div class="form-group">
       <label>Picture Type</label>
-      <p><span *ngIf="presentedit != 3">{{leafvalues.pictureType}}</span>
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required *ngIf="presentedit == 3">
+      <p><span *ngIf="presentedit == 0">{{leafvalues.pictureType}}</span>
+        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required *ngIf="presentedit == 1">
           <option value="Level0">Level 0</option>
           <option value="Level1">Level 1</option>
           <option value="Level2">Level 2</option>
@@ -33,65 +53,14 @@
         </select>
 
 
-      <a (click)="editopen(3)">Edit</a></p>
+
     </div>
-    <div class="form-group">
-      <label>Shape:</label>
-      <p><span *ngIf="presentedit != 4">{{leafvalues.leafShape}}</span>
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.leafShape" name="leafShape" required *ngIf="presentedit == 4">
-          <option value="Ovate">Ovate</option>
-          <option value="Obovate">Obovate</option>
-          <option value="Lanceolate">Lanceolate</option>
-          <option value="Oblanceolate">Oblanceolate</option>
-          <option value="Cordate">Cordate</option>
-          <option value="Obcordate">Obcordate</option>
-          <option value="Elliptical">Elliptical</option>
-          <option value="Oblong">Oblong</option>
-          <option value="Cuneate">Cuneate</option>
-          <option value="Linear">Linear</option>
-          <option value="Peltate">Peltate</option>
-          <option value="Spatulate">Spatulate</option>
-          <option value="Reniform">Reniform</option>
-          <option value="Hastate">Hastate</option>
-        </select>
 
-
-      <a (click)="editopen(4)">Edit</a></p>
-    </div>
-    <div class="form-group">
-      <label>Leaf Margin</label>
-      <p><span *ngIf="presentedit != 5">{{leafvalues.leafMargin}}</span>
-
-        <select class="selectpicker form-control" name="completed" [(ngModel)] = "leafvalues.leafMargin" *ngIf="presentedit == 5">
-          <option value="Entire">Entire</option>
-          <option value="Dentate">Dentate</option>
-          <option value="Serrate">Serrate</option>
-          <option value="Incised">Incised</option>
-        </select>
-
-
-      <a (click)="editopen(5)">Edit</a></p>
-    </div>
-    <div class="form-group">
-      <label>Leaf Division:</label>
-      <p><span *ngIf="presentedit != 6">{{leafvalues.leafDivision}}</span>
-        <select class="selectpicker form-control" name="division" [(ngModel)] = "leafvalues.leafDivision" *ngIf="presentedit == 6">
-          <option value="Simple">Simple</option>
-          <option value="Compound (Pinnate) Bipennate">Compound (Pinnate) Bipennate</option>
-          <option value="Compound (Pinnate) Tripennate">Compound (Pinnate) Tripennate</option>
-          <option value="Compound (Pinnate) Decompund">Compound (Pinnate) Decompund</option>
-          <option value="Compound (Palmate) Unifoliate">Compound (Palmate) Unifoliate</option>
-          <option value="Compound (Palmate) Bifoliate">Compound (Palmate) Bifoliate</option>
-          <option value="Compound (Palmate) Trifoliate">Compound (Palmate) Trifoliate</option>
-        </select>
-
-      <a (click)="editopen(6)">Edit</a></p>
-    </div>
     <div class="form-group">
       <label>Season:</label>
-      <p><span *ngIf="presentedit != 7">{{leafvalues.pictureSeason}}</span>
+      <p><span *ngIf="presentedit == 0">{{leafvalues.pictureSeason}}</span>
 
-        <select class="selectpicker form-control" name="season" [(ngModel)] = "leafvalues.pictureSeason" *ngIf="presentedit == 7">
+        <select class="selectpicker form-control" name="season" [(ngModel)] = "leafvalues.pictureSeason" *ngIf="presentedit == 1">
           <option value="Spring">Spring</option>
           <option value="Summer">Summer</option>
           <option value="Monsoon">Monsoon</option>
@@ -100,75 +69,58 @@
         </select>
 
 
-      <a (click)="editopen(7)">Edit</a></p>
+
     </div>
     <div class="form-group">
       <label>Leaf Health:</label>
-      <p><span *ngIf="presentedit != 8">{{leafvalues.leafHealth}}</span>
-        <select class="selectpicker form-control" name="health" [(ngModel)] = "leafvalues.leafHealth" *ngIf="presentedit == 8">
+      <p><span *ngIf="presentedit == 0">{{leafvalues.leafHealth}}</span>
+        <select class="selectpicker form-control" name="health" [(ngModel)] = "leafvalues.leafHealth" *ngIf="presentedit == 1">
           <option value="Good">Good</option>
           <option value="Not Good">Not Good</option>
         </select>
-      <a (click)="editopen(8)">Edit</a></p>
+
 
     </div>
 
     <div class = "form-group">
       <label for = "Disease">Disease</label>
-      <p><span *ngIf="presentedit != 9">{{leafvalues.Disease}}</span>
-      <input type = "text" class = "form-control" id = "Disease" required *ngIf="presentedit == 9"
+      <p><span *ngIf="presentedit == 0">{{leafvalues.Disease}}</span>
+      <input type = "text" class = "form-control" id = "Disease" required *ngIf="presentedit == 1"
              [(ngModel)] = "leafvalues.Disease" name = "Disease">
-        <a (click)="editopen(9)">Edit</a></p>
-    </div>
-    <div class = "form-group">
-      <label for = "Description">Description</label>
-      <p><span *ngIf="presentedit != 10">{{leafvalues.Description}}</span>
-      <input type = "text" class = "form-control" id = "Description" required *ngIf="presentedit == 10"
-             [(ngModel)] = "leafvalues.Description" name = "Description">
-        <a (click)="editopen(10)">Edit</a></p>
-    </div>
-    <div class = "form-group">
-      <label for = "family">Family</label>
-      <p><span *ngIf="presentedit != 11">{{leafvalues.family}}</span>
-        <input type = "text" class = "form-control" id = "family"
-               [(ngModel)] = "leafvalues.family" name = "family" *ngIf="presentedit == 11">
-        <a (click)="editopen(11)">Edit</a></p>
-    </div>
-    <div class = "form-group">
-      <label for = "Utility">Utility</label>
-      <p><span *ngIf="presentedit != 12">{{leafvalues.Utility}}</span>
-        <input type = "text" class = "form-control" id = "Utility"
-               [(ngModel)] = "leafvalues.Utility" name = "Utility" *ngIf="presentedit == 12">
-        <a (click)="editopen(12)">Edit</a></p>
+
     </div>
 
     <div class="form-group">
       <label>Annotation Complete:</label>
-      <p><span *ngIf="presentedit != 12">{{leafvalues.AnnotationComplete}}</span>
+      <p><span *ngIf="presentedit == 0">{{leafvalues.AnnotationComplete}}</span>
 
-        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete" *ngIf="presentedit == 12">
+        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete" *ngIf="presentedit == 1">
           <option value="true">yes</option>
           <option value="false">no</option>
         </select>
-      <a (click)="editopen(12)">Edit</a></p>
+
       </div>
+    <div class="form-group">
+      <label>Tagging Complete:</label>
+      <p><span *ngIf="presentedit == 0">{{leafvalues.TaggingComplete}}</span>
+
+        <select class="selectpicker form-control" name="Tagging" [(ngModel)] = "leafvalues.TaggingComplete" *ngIf="presentedit == 1">
+          <option value="true">yes</option>
+          <option value="false">no</option>
+        </select>
+
+    </div>
 
 
     <p>Annotation details
-      <input type="text" id="why" name="annote_area" class="form-control mr-sm-2" [(ngModel)]="leafvalues.annotationtext">
+      <span *ngIf="presentedit == 0">{{leafvalues.annotationtext}}</span>
+      <input type="text" id="why" name="annote_area" class="form-control mr-sm-2" [(ngModel)]="leafvalues.annotationtext" *ngIf="presentedit == 1">
       <br>
       <br>
-      <img src="http://localhost:3002/{{leafvalues.leafname}}" id="blah"  width="200" height="200" class="annotatable" /><br>
-    <div id="submitBtn">
-      <button (click)="myFunction()" class="btn btn-outline-success my-2 my-sm-0"><span class="btn-text">Update Annotation</span></button>
-    </div>
-
-    <p>
-      <br>
-    <div id="submitBtn">
-      <button (click)="submitUpload()"><span class="btn-text">Submit Leaf</span></button>
-    </div>
-
+      <img [src]="server + '/' + leafvalues.leafname" id="blah"  width="200" height="200" /><br>
+      <button type="button" (click)="myFunction()" *ngIf="checkuserloggedin()" class="btn btn-danger"><span class="btn-text">Update Annotation</span></button>
+      <div>
+      <button type="button" (click)="presentedit = 0 && submitUpload()" class="btn btn-danger" *ngIf="presentedit == 1">Save</button>
+      </div>
   </form>
 </div>
-

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import {Http, Jsonp, RequestOptions} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import {server} from "../config";
 
 @Injectable()
 export class UploadService {
-  server = 'http://localhost:3002';
+  server = server;
   uploadserver = this.server + '/upload';
   updateserver = this.server + '/update';
   familyscientificserver = this.server + '/familybyscientific';
@@ -15,6 +16,8 @@ export class UploadService {
   leafserver = this.server + '/leafbyid';
   deleteLeafServer = this.server + '/leafdelete';
   dashboardServer = this.server + '/dashboard';
+  annotationserver = this.server + '/annotationupdate';
+  updatefamilyserver = this.server + '/updatefamily'
   constructor(
     private http: Http,
     private jsonp: Jsonp,
@@ -33,7 +36,7 @@ export class UploadService {
     console.log(uploadinfo);
       return this.http
         .post(this.uploadserver, uploadinfo).map(res => {
-          res.json();
+          return res.json();
       });
   }
   deleteLeaf(id) {
@@ -73,19 +76,45 @@ export class UploadService {
         return res.json();
       });
   }
-  getLeavesOfFamily(id, presentcount, count, annoted, userglobal) {
+  getLeavesOfFamily(id, presentcount, count, annoted, userglobal, level, annotation, disease, tagging) {
     if (!annoted) {
       annoted = false;
     }
+    let username = '';
+    if (JSON.parse(localStorage.getItem('currentUser'))){
+      username = JSON.parse(localStorage.getItem('currentUser')).username;
+    } else {
+      username = 'guest';
+    }
     return this.http
-      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted, username: JSON.parse(localStorage.getItem('currentUser')).username, userglobal: userglobal }).map(res => {
+      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted, username: username, userglobal: userglobal, level: level , annotation: annotation, disease: disease, tagging: tagging }).map(res => {
         return res.json();
       });
   }
   getdashboardstats() {
+    let username = '';
+    if (JSON.parse(localStorage.getItem('currentUser'))){
+      username = JSON.parse(localStorage.getItem('currentUser')).username;
+    } else {
+      username = 'guest';
+    }
     return this.http
-      .post(this.dashboardServer, { username: JSON.parse(localStorage.getItem('currentUser')).username }).map(res => {
+      .post(this.dashboardServer, { username: username }).map(res => {
         return res.json();
       });
   }
+  updatefamily(updateinfo) {
+    return this.http
+      .post(this.updatefamilyserver, updateinfo).map(res => {
+        res.json();
+      });
+  }
+  updateannotation(uploadinfo) {
+    console.log(uploadinfo);
+    return this.http
+      .post(this.annotationserver, uploadinfo).map(res => {
+        res.json();
+      });
+  }
+
 }

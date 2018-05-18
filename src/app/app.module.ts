@@ -16,9 +16,9 @@ import {AuthGuard} from "./services/auth.guard";
 import {AuthenticationService} from "./services/authentication.service";
 import {UserService} from "./services/user.service";
 const appRoutes: Routes = [
-  {path: '', component: DashboardComponent, canActivate: [AuthGuard]},
+  {path: '', component: DashboardComponent},
   {path: 'upload', component: UploadComponent, canActivate: [AuthGuard]},
-  {path: 'leafedit/:id', component: LeafeditComponent, canActivate: [AuthGuard]},
+  {path: 'leafedit/:id', component: LeafeditComponent},
   {path: 'login', component: LoginComponent},
   { path: '**', redirectTo: '' }
 ];
