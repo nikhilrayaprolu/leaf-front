@@ -11,6 +11,8 @@ declare var anno: any;
 })
 export class LeafeditComponent implements OnInit {
   server = server;
+  image_path = server + '/final_uploads/';
+  fallback_path = server + '/uploads/';
   leafid: number;
   leafdata: any;
   autoresults: any;
@@ -100,5 +102,12 @@ export class LeafeditComponent implements OnInit {
     this.leafvalues.annotationtext = ans;
     console.log(anno.getAnnotations());
   }
-
+  changeSource(event, name)
+  {
+    if(event.target.getAttribute('fallback') == undefined)
+    {
+      event.target.src = this.fallback_path + name;
+      event.target.setAttribute("fallback", "true");
+    }
+  }
 }

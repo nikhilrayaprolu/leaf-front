@@ -44,7 +44,7 @@
     <div  *ngIf="showleaftypes == 2">
       <div *ngFor="let item of family;let i = index">
         <div class="item" (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
-          <img [src]='server + "/" + item.leaves[0].leafname' height="200px" width="200px" [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)" height="200px" width="200px" [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
           <h5><b>{{item.scientificName}}</b></h5>
         </div>
       </div>
@@ -69,7 +69,7 @@
 
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
-            <img [src]='server + "/" + item.leafname' height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+            <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
             <div class="card-footer">
               <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin()">Annotate</button>
               <button (click)="imageprofile(i)" *ngIf="checkuserloggedin()">Edit</button>

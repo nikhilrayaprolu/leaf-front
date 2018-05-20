@@ -12,7 +12,9 @@ declare var anno: any;
 export class DashboardComponent implements OnInit {
   family: any;
   showleaftypes = 0;
-  server = server
+  server = server;
+  image_path = server + '/final_uploads/';
+  fallback_path = server + '/uploads/';
   items: any;
   presentitemcount = 50;
   presentid: any;
@@ -165,7 +167,14 @@ export class DashboardComponent implements OnInit {
     });
     this.presentedit = 1;
   }
-
+  changeSource(event, name)
+  {
+    if(event.target.getAttribute('fallback') == undefined)
+    {
+      event.target.src = this.fallback_path + name;
+      event.target.setAttribute("fallback", "true");
+    }
+  }
   ngOnInit() {
   }
 
