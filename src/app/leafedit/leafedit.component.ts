@@ -11,6 +11,8 @@ declare var anno: any;
 })
 export class LeafeditComponent implements OnInit {
   server = server;
+  image_path = server + '/final_uploads/';
+  fallback_path = server + '/uploads/';
   leafid: number;
   leafdata: any;
   autoresults: any;
@@ -53,10 +55,13 @@ export class LeafeditComponent implements OnInit {
     }
   }
   public submitUpload() {
+    console.log('Inside Submit Upload');
     this.leafvalues.lastedituser = JSON.parse(localStorage.getItem('currentUser')).username;
+    console.log(this.leafvalues);
     this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
       this.router.navigate(['/']);
     });
+    this.presentedit = 1;
   }
   public searchscientificName($event) {
     this.uploadservice.getFamilyByScientificName(this.leafvalues.scientificName).subscribe(res => {
@@ -100,5 +105,12 @@ export class LeafeditComponent implements OnInit {
     this.leafvalues.annotationtext = ans;
     console.log(anno.getAnnotations());
   }
-
+  changeSource(event, name)
+  {
+    if(event.target.getAttribute('fallback') == undefined)
+    {
+      event.target.src = this.fallback_path + name;
+      event.target.setAttribute("fallback", "true");
+    }
+  }
 }

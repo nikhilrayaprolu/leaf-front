@@ -17,7 +17,8 @@ export class UploadService {
   deleteLeafServer = this.server + '/leafdelete';
   dashboardServer = this.server + '/dashboard';
   annotationserver = this.server + '/annotationupdate';
-  updatefamilyserver = this.server + '/updatefamily'
+  updatefamilyserver = this.server + '/updatefamily';
+  deletefamilyserver = this.server + '/deletefamily';
   constructor(
     private http: Http,
     private jsonp: Jsonp,
@@ -103,11 +104,13 @@ export class UploadService {
         return res.json();
       });
   }
-  updatefamily(updateinfo) {
+  updatefamily(family) {
     return this.http
-      .post(this.updatefamilyserver, updateinfo).map(res => {
-        res.json();
-      });
+      .post(this.updatefamilyserver, family);
+  }
+  deletefamily(family) {
+  return this.http
+    .post(this.deletefamilyserver, family);
   }
   updateannotation(uploadinfo) {
     console.log(uploadinfo);
