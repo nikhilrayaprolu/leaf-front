@@ -166,6 +166,7 @@ export class DashboardComponent implements OnInit {
   }
   savefamily(family) {
     this.uploadService.updatefamily(this.family[this.presentleaf]).subscribe(res => {
+    window.location.reload();
     });
     this.presentedit = 1;
   }

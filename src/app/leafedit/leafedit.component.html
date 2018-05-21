@@ -3,7 +3,7 @@
 
   <form ngNativeValidate>
     <button type="button" (click)="presentedit = 1" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Edit</button>
-    <button type="button" (click)="presentedit = 0 && submitUpload()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Save</button>
+    <button type="button" (click)="submitUpload()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Save</button>
 
     <button type="button" (click)="deleteleaf()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
     <div class = "form-group">

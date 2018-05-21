@@ -55,10 +55,13 @@ export class LeafeditComponent implements OnInit {
     }
   }
   public submitUpload() {
+    console.log('Inside Submit Upload');
     this.leafvalues.lastedituser = JSON.parse(localStorage.getItem('currentUser')).username;
+    console.log(this.leafvalues);
     this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
       this.router.navigate(['/']);
     });
+    this.presentedit = 1;
   }
   public searchscientificName($event) {
     this.uploadservice.getFamilyByScientificName(this.leafvalues.scientificName).subscribe(res => {
