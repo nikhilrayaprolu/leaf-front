@@ -104,15 +104,13 @@ export class UploadService {
         return res.json();
       });
   }
-  updatefamily(updateinfo) {
+  updatefamily(family) {
     return this.http
-      .post(this.updatefamilyserver, updateinfo).map(res => {
-        res.json();
-      });
+      .post(this.updatefamilyserver, family);
   }
-  deletefamily(family_id) {
+  deletefamily(family) {
   return this.http
-    .post(this.deletefamilyserver, {id: family_id});
+    .post(this.deletefamilyserver, family);
   }
   updateannotation(uploadinfo) {
     console.log(uploadinfo);

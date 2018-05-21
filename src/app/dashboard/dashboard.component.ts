@@ -42,6 +42,8 @@ export class DashboardComponent implements OnInit {
         this.showleaftypes = parseInt(query['present']);
         this.uploadService.getAllFamily().subscribe(res => {
           this.family = res;
+          if (query['imageid'])
+          this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(parseInt(query['imageid']));
         });
       } else {
         this.showleaftypes = 0;
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnInit {
       }
       if (query['imageid']) {
         this.searchdata['imageid'] = query['imageid'];
-        this.presentleaf = parseInt(query['imageid']);
+        console.log(this.family);
         if(this.showleaftypes === 1)
           this.FamilyLeaves(parseInt(query['imageid']));
       }
@@ -87,6 +89,7 @@ export class DashboardComponent implements OnInit {
     this.showleaftypes = 1;
     this.searchdata.present = 1;
     this.presentitemcount = 50;
+    if(this.family)
     this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(id);
     this.searchdata.imageid = id;
     if (this.showleaftypes === 1) {
@@ -161,17 +164,23 @@ export class DashboardComponent implements OnInit {
   editfamily() {
     this.presentedit = 0;
   }
-  savefamily() {
+  savefamily(family) {
     this.uploadService.updatefamily(this.family[this.presentleaf]).subscribe(res => {
-      console.log(res);
     });
     this.presentedit = 1;
   }
-  deletefamily(family){
-  console.log(family);
-  this.uploadService.deletefamily(family['_id']).subscribe(res => {
-    console.log(res);
-  });
+  deletefamily(){
+    this.family[this.presentleaf].leaves.forEach(function(leaf)
+    {
+    console.log(leaf['_id']);
+    });
+  this.uploadService.deletefamily(this.family[this.presentleaf]).subscribe(res => {
+    this.uploadService.getAllFamily().subscribe(res => {
+    this.family = res;
+    this.searchdata = {'present': 1, 'imageid': this.family[0]['_id'], usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'}
+    this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
+    });
+    });
   }
   changeSource(event, name)
   {
