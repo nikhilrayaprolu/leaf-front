@@ -83,7 +83,7 @@
 
     <div class="col-sm-3 col-sm-3" *ngIf="showleaftypes == 1">
       <form ngNativeValidate  *ngIf="family && family[presentleaf]">
-        <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
+        <button type="button" (click)="deletefamily(family[presentleaf])" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
         <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Edit</button>
         <button type="button" (click)="savefamily()" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Save</button>
         <div class = "form-group">

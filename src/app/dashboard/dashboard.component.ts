@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
     this.showleaftypes = 1;
     this.searchdata.present = 1;
     this.presentitemcount = 50;
-    this.presentleaf = id;
+    this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(id);
     this.searchdata.imageid = id;
     if (this.showleaftypes === 1) {
       this.uploadService.getLeavesOfFamily(id, 0, 50, 'Both', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
@@ -166,6 +166,12 @@ export class DashboardComponent implements OnInit {
       console.log(res);
     });
     this.presentedit = 1;
+  }
+  deletefamily(family){
+  console.log(family);
+  this.uploadService.deletefamily(family['_id']).subscribe(res => {
+    console.log(res);
+  });
   }
   changeSource(event, name)
   {
