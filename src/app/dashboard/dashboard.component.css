@@ -1,8 +1,25 @@
 .my-drop-zone { border: dotted 3px lightgray; }
 .nv-file-over { border: dotted 3px red; } /* Default class applied to drop zones on over */
 .another-file-over-class { border: dotted 3px green; }
-
-html, body { height: 100%; }
+.options-list{
+  margin: 3vh 7vw;
+}
+.photo-list{
+  padding: 3vh 5vw;
+}
+.name-list{
+  padding: 3vh 2vw;
+}
+.edit-list{
+  padding: 3vh 4vw 3vh 0vw;
+}
+.dashboard{
+  padding: 5vh 10vw;
+}
+html, body { 
+  height: 100%;
+  width:100%;
+ }
 .pointer {
   cursor: pointer;
 }
@@ -126,7 +143,7 @@ a {
 }
 figure {
     display: inline-block;
-    margin: 20px;
+    margin: 20px 15px;
     float:left;
     text-align: center;
     border: 1px black;
