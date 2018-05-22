@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container pt-3">
   <div class="row">
     <div class="row" *ngIf="showleaftypes!=0">
       <div class="col-md-3">
@@ -43,9 +43,13 @@
       </div>
     <div  *ngIf="showleaftypes == 2">
       <div *ngFor="let item of family;let i = index">
-        <div class="item" (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
-          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)" height="200px" width="200px" [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+        <div (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
+          <figure>
+          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+          <figcaption>
           <h5><b>{{item.scientificName}}</b></h5>
+        </figcaption>
+        </figure>
         </div>
       </div>
     </div>
@@ -81,7 +85,7 @@
     </div>
 
 
-    <div class="col-sm-3 col-sm-3" *ngIf="showleaftypes == 1">
+    <div class="col-sm-3 col-sm-3 pt-3" *ngIf="showleaftypes == 1">
       <form ngNativeValidate  *ngIf="family && family[presentleaf]">
         <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
         <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Edit</button>
@@ -177,11 +181,11 @@
           <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Catalogue</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)" >
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)" >
           <img src="https://imgur.com/download/twhrM1d" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Tag New Images</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)">
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)">
           <img src="http://www.averusa.com/classroom-technology/assets/img/myndshare/icon-pen.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Annotate New Images</h4>
         </div>
