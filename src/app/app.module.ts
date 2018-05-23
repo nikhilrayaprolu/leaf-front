@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import {AuthGuard} from "./services/auth.guard";
 import {AuthenticationService} from "./services/authentication.service";
 import {UserService} from "./services/user.service";
+
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'upload', component: UploadComponent, canActivate: [AuthGuard]},

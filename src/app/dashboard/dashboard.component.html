@@ -2,6 +2,9 @@
   <div class ="row">
     <div class="row options-list" *ngIf="showleaftypes!=0">
       <div class="col-md-2">
+        <input type="text" class="form-control col-md-3" placeholder ="Search Species" [(ngModel)]="search" (keyup)=searchFamily(search) />
+      </div>
+      <div class="col-md-2">
       <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "userglobal" (change)="getAllFamily(showleaftypes)">
         <option value="User"> User </option>
         <option value="Global"> Global </option>
