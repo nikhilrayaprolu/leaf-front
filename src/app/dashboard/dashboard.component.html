@@ -1,13 +1,13 @@
-<div class="container">
-  <div class="row">
-    <div class="row" *ngIf="showleaftypes!=0">
-      <div class="col-md-3">
+<div>
+  <div class ="row">
+    <div class="row options-list" *ngIf="showleaftypes!=0">
+      <div class="col-md-2">
       <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "userglobal" (change)="getAllFamily(showleaftypes)">
         <option value="User"> User </option>
         <option value="Global"> Global </option>
       </select>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
       <select class="selectpicker form-control col-md-3" name="level" [(ngModel)] = "searchdata.level" (change)="getAllFamily(showleaftypes)">
         <option value="All">Level All </option>
         <option value="Level0">Level 0 </option>
@@ -16,7 +16,7 @@
         <option value="Level3">Level 3 </option>
       </select>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
 
       <select class="selectpicker form-control col-md-3" name="disease" [(ngModel)] = "searchdata.disease" (change)="getAllFamily(showleaftypes)">
         <option value="All">Disease All </option>
@@ -24,7 +24,7 @@
         <option value="Not Good">Disease No </option>
       </select>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
 
       <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.annotation" (change)="getAllFamily(showleaftypes)">
         <option value="All">Annotation All </option>
@@ -32,7 +32,7 @@
         <option value="false">Annotation No </option>
       </select>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-2">
 
         <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.tagging" (change)="getAllFamily(showleaftypes)">
           <option value="All">Tagging All </option>
@@ -41,15 +41,19 @@
         </select>
       </div>
       </div>
-    <div  *ngIf="showleaftypes == 2">
+    <div class ="photo-list"  *ngIf="showleaftypes == 2">
       <div *ngFor="let item of family;let i = index">
-        <div class="item" (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
-          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)" height="200px" width="200px" [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+        <div (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
+          <figure>
+          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+          <figcaption>
           <h5><b>{{item.scientificName}}</b></h5>
+        </figcaption>
+        </figure>
         </div>
       </div>
     </div>
-    <div class="col-sm-3 col-md-2" *ngIf="showleaftypes==1">
+    <div class="col-sm-2 col-md-2 name-list" *ngIf="showleaftypes==1">
     <table class="table" *ngIf="showleaftypes==1">
       <thead>
       <tr>
@@ -63,13 +67,15 @@
       </tbody>
     </table>
     </div>
-    <div class="col-sm-7 col-md-7" *ngIf="showleaftypes==1">
+    <div class="col-sm-7 col-md-7 photo-list" *ngIf="showleaftypes==1">
       <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       </div>
 
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
+            <figure>
             <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+          </figure>
             <div class="card-footer">
               <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin()">Annotate</button>
               <button (click)="imageprofile(i)" *ngIf="checkuserloggedin()">Edit</button>
@@ -81,11 +87,13 @@
     </div>
 
 
-    <div class="col-sm-3 col-sm-3" *ngIf="showleaftypes == 1">
+    <div class="col-sm-3 col-sm-3 mt-3 edit-list" *ngIf="showleaftypes == 1">
       <form ngNativeValidate  *ngIf="family && family[presentleaf]">
+        <div class="options">
         <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
         <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Edit</button>
         <button type="button" (click)="savefamily()" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Save</button>
+      </div>
         <div class = "form-group">
           <label for = "scientificName">Scientific Name</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].scientificName}}</span>
@@ -170,18 +178,18 @@
       </form>
     </div>
     <div *ngIf="showleaftypes==0">
-    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-      <h1>Dashboard</h1>
-      <section class="row text-center placeholders">
+    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 mx-auto">
+      <section class="text-center placeholders dashboard">
+        <h1 class= "text-center">Dashboard</h1>
         <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllFamily(2)" >
           <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Catalogue</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)" >
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)" >
           <img src="https://imgur.com/download/twhrM1d" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Tag New Images</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllUnAnnoted(2)">
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)">
           <img src="http://www.averusa.com/classroom-technology/assets/img/myndshare/icon-pen.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Annotate New Images</h4>
         </div>
