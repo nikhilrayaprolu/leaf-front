@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
     diseased: 0,
     userleaves: 0,
   };
+  logged ="col-sm-6";
   annotationstate = 0;
   presentimageannotated = -1;
   presentedit = 1;
@@ -38,7 +39,10 @@ export class DashboardComponent implements OnInit {
   searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
-      this.highlight();
+      if(this.checkuserloggedin())
+        this.logged = "col-sm-3";
+      else
+        this.logged = "col-sm-6";
       if (query['present']) {
         this.searchdata['present'] = query['present'];
         this.showleaftypes = parseInt(query['present']);
@@ -116,7 +120,6 @@ export class DashboardComponent implements OnInit {
     if(this.family)
     {
       this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(id);
-      this.highlight();
     }
     this.searchdata.imageid = id;
     if (this.showleaftypes === 1) {
@@ -133,12 +136,6 @@ export class DashboardComponent implements OnInit {
   }
   imageprofile(id) {
     this.router.navigate(['/leafedit', this.items[id]._id]);
-  }
-  highlight(){
-  var selectedClass = document.getElementsByClassName('query-suggestions')[this.presentleaf];
-    console.log(selectedClass);
-    if(selectedClass)
-    selectedClass.classList.add("highlight", "alert", "alert-success");
   }
   onScroll () {
     if (this.showleaftypes === 1) {
@@ -223,11 +220,11 @@ export class DashboardComponent implements OnInit {
       event.target.setAttribute("fallback", "true");
     }
   }
-  ngOnInit() {
-  }
-  clearSearch()
+    clearSearch()
   {
     this.search = "";
     this.searchFamily("");
+  }
+  ngOnInit() {
   }
 }

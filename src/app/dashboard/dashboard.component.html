@@ -76,6 +76,7 @@
     <div class="col-sm-7 col-md-7 photo-list" *ngIf="showleaftypes==1">
       <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       </div>
+        <h2 class ="text-center"> {{family[presentleaf].scientificName}} </h2>
         <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
@@ -184,11 +185,11 @@
       </form>
     </div>
     <div *ngIf="showleaftypes==0">
-    <main role="main" class="col-sm-12 ml-sm-auto col-md-12">
+    <main role="main" class="col-sm-12 ml-sm-auto col-md-12 dashboard-wrapper">
       <h1 class= "text-center">Dashboard</h1>
       <section class="text-center placeholders dashboard">
-        <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllFamily(2)" >
-          <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail">
+        <div [ngClass] = "logged" (click)="getAllFamily(2)" >
+          <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" style = "margin:auto" alt="Generic placeholder thumbnail">
           <h4>Catalogue</h4>
         </div>
         <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)" >
@@ -199,7 +200,7 @@
           <img src="http://www.averusa.com/classroom-technology/assets/img/myndshare/icon-pen.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Annotate New Images</h4>
         </div>
-        <div class="col-sm-3">
+        <div [ngClass] = "logged">
         <div>
           <h4>Total Number of leaves</h4>
           <p>{{dashboardstatistics.familycount}}</p>
