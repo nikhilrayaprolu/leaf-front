@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   annotationstate = 0;
   presentimageannotated = -1;
   presentedit = 1;
+  all_families = [];
   search="";
   searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
   userglobal = "Global";
@@ -43,6 +44,7 @@ export class DashboardComponent implements OnInit {
         this.showleaftypes = parseInt(query['present']);
         this.uploadService.getAllFamily().subscribe(res => {
           this.family = res;
+          this.all_families = res;
           if (query['imageid'])
           this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(parseInt(query['imageid']));
         });
@@ -73,26 +75,29 @@ export class DashboardComponent implements OnInit {
     this.showleaftypes = num;
     this.uploadService.getAllFamily().subscribe(res => {
       this.family = res;
+      this.all_families=res;
     });
+    console.log(this.family);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   searchFamily(value){
     if(value!="")
-      this.family = this.family.filter(family => family.scientificName.toLowerCase().includes(value.toLowerCase()));
+    { 
+      this.family = this.all_families.filter(family => (family.scientificName.toLowerCase().includes(value.toLowerCase())||family.commonName.toLowerCase().includes(value.toLowerCase())));
+    }
     else
-      this.uploadService.getAllFamily().subscribe(res => {
-      this.family = res;
-    });
+    {
+      this.family = this.all_families;
+    }
     if(this.family.length > 0)
     {
       this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(this.family[0]._id);
       this.searchdata.imageid = this.family[0]._id;
-      if (this.showleaftypes === 2) {
+      if (this.showleaftypes === 1) {
         this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
           this.items = res;
         });
       }
-      this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
     }
     else
       this.items = [];
@@ -214,5 +219,9 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit() {
   }
-
+  clearSearch()
+  {
+    this.search = "";
+    this.searchFamily("");
+  }
 }

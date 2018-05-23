@@ -2,7 +2,10 @@
   <div class ="row">
     <div class="row options-list" *ngIf="showleaftypes!=0">
       <div class="col-md-2">
-        <input type="text" class="form-control col-md-3" placeholder ="Search Species" [(ngModel)]="search" (keyup)=searchFamily(search) />
+        <div class="form-group has-feedback">
+        <input type="text" class="form-control col-md-3" placeholder ="Search Species" [(ngModel)]="search" (keyup)=searchFamily(search) /> 
+        <i class ="glyphicon glyphicon-remove-circle form-control-feedback" (click)=clearSearch()></i> 
+        </div>
       </div>
       <div class="col-md-2">
       <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "userglobal" (change)="getAllFamily(showleaftypes)">

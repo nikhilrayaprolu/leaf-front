@@ -150,10 +150,13 @@ figure {
     border-style: solid;
 }
 figure img{
-  width:300px;
-  height: 200px;
+  width: 15vw;
+  height: 18vh;
 }
 figure figcaption {
   display: block;
   padding: 2px;
   }
+.glyphicon {
+      pointer-events: all;
+    }
