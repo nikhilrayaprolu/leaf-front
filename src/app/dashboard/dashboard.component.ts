@@ -36,9 +36,9 @@ export class DashboardComponent implements OnInit {
   all_families = [];
   search="";
   searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
-  userglobal = "Global";
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
+      this.highlight();
       if (query['present']) {
         this.searchdata['present'] = query['present'];
         this.showleaftypes = parseInt(query['present']);
@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit {
       }
       if (query['usertype']) {
         this.searchdata['usertype'] = query['usertype'];
-        this.userglobal = query['usertype'];
       }
       if (query['imageid']) {
         this.searchdata['imageid'] = query['imageid'];
@@ -77,7 +76,6 @@ export class DashboardComponent implements OnInit {
       this.family = res;
       this.all_families=res;
     });
-    console.log(this.family);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   searchFamily(value){
@@ -94,7 +92,7 @@ export class DashboardComponent implements OnInit {
       this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(this.family[0]._id);
       this.searchdata.imageid = this.family[0]._id;
       if (this.showleaftypes === 1) {
-        this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+        this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
           this.items = res;
         });
       }
@@ -111,32 +109,40 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   FamilyLeaves(id){
-    this.searchdata['usertype'] = this.userglobal;
+    //this.searchdata['usertype'] = this.userglobal;
     this.showleaftypes = 1;
     this.searchdata.present = 1;
     this.presentitemcount = 50;
     if(this.family)
-    this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(id);
+    {
+      this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(id);
+      this.highlight();
+    }
     this.searchdata.imageid = id;
     if (this.showleaftypes === 1) {
-      this.uploadService.getLeavesOfFamily(id, 0, 50, 'Both', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+      this.uploadService.getLeavesOfFamily(id, 0, 50, 'Both', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
         this.items = res;
       });
     }
     if (this.showleaftypes === 2) {
-      this.uploadService.getLeavesOfFamily(id, 0, 50, 'Not', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+      this.uploadService.getLeavesOfFamily(id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
         this.items = res;
       });
     }
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
-
   }
   imageprofile(id) {
     this.router.navigate(['/leafedit', this.items[id]._id]);
   }
+  highlight(){
+  var selectedClass = document.getElementsByClassName('query-suggestions')[this.presentleaf];
+    console.log(selectedClass);
+    if(selectedClass)
+    selectedClass.classList.add("highlight", "alert", "alert-success");
+  }
   onScroll () {
     if (this.showleaftypes === 1) {
-      this.uploadService.getLeavesOfFamily(this.presentid, this.presentitemcount, 50, 'Both', this.userglobal,this.searchdata.level, this.searchdata.annotation, this.searchdata.disease,this.searchdata.tagging ).subscribe(res => {
+      this.uploadService.getLeavesOfFamily(this.presentid, this.presentitemcount, 50, 'Both', this.searchdata.usertype,this.searchdata.level, this.searchdata.annotation, this.searchdata.disease,this.searchdata.tagging ).subscribe(res => {
 
         this.items = this.items.concat(res);
         if(res.length > 49){
@@ -145,7 +151,7 @@ export class DashboardComponent implements OnInit {
 
       });
     } else if (this.showleaftypes === 2) {
-      this.uploadService.getLeavesOfFamily(this.presentid, this.presentitemcount, 50, 'Not', this.userglobal, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+      this.uploadService.getLeavesOfFamily(this.presentid, this.presentitemcount, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
         this.items = this.items.concat(res);
         if(res.length > 49){
           this.presentitemcount += 50;

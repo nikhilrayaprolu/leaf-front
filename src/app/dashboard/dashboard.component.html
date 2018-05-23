@@ -8,7 +8,7 @@
         </div>
       </div>
       <div class="col-md-2">
-      <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "userglobal" (change)="getAllFamily(showleaftypes)">
+      <select class="selectpicker form-control col-md-3" name="season" [(ngModel)] = "searchdata.usertype" (change)="getAllFamily(showleaftypes)">
         <option value="User"> User </option>
         <option value="Global"> Global </option>
       </select>
@@ -76,7 +76,7 @@
     <div class="col-sm-7 col-md-7 photo-list" *ngIf="showleaftypes==1">
       <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       </div>
-
+        <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
             <figure>
@@ -184,9 +184,9 @@
       </form>
     </div>
     <div *ngIf="showleaftypes==0">
-    <main role="main" class="col-sm-9 ml-sm-auto col-md-10 mx-auto">
+    <main role="main" class="col-sm-12 ml-sm-auto col-md-12">
+      <h1 class= "text-center">Dashboard</h1>
       <section class="text-center placeholders dashboard">
-        <h1 class= "text-center">Dashboard</h1>
         <div class="col-6 col-sm-3 placeholder pointer" (click)="getAllFamily(2)" >
           <img src="http://halo.co.uk/wp-content/uploads/2016/11/Catalogue-Gobos-904.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Catalogue</h4>
