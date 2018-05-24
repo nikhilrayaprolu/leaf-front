@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
     userleaves: 0,
   };
   logged ="col-sm-6";
+  optionslogged ="col-md-4"
   annotationstate = 0;
   presentimageannotated = -1;
   presentedit = 1;
@@ -40,9 +41,15 @@ export class DashboardComponent implements OnInit {
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
       if(this.checkuserloggedin())
-        this.logged = "col-sm-3";
+        {
+          this.logged = "col-sm-3";
+          this.optionslogged ="col-md-2";
+        }
       else
+      {
         this.logged = "col-sm-6";
+        this.optionslogged ="col-md-4";
+      }
       if (query['present']) {
         this.searchdata['present'] = query['present'];
         this.showleaftypes = parseInt(query['present']);
@@ -113,7 +120,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   FamilyLeaves(id){
-    //this.searchdata['usertype'] = this.userglobal;
     this.showleaftypes = 1;
     this.searchdata.present = 1;
     this.presentitemcount = 50;
@@ -176,14 +182,16 @@ export class DashboardComponent implements OnInit {
     if(this.items.length)
       annotationdata.leafid = this.items[this.presentimageannotated]._id;
     let ans = '';
-    for (let i = 0;i < anno.getAnnotations().length; i++){
-      ans=ans+ "{" + anno.getAnnotations()[i].text +  "," + anno.getAnnotations()[i].shapes["0"].geometry.height +","+anno.getAnnotations()[i].shapes["0"].geometry.width+","+anno.getAnnotations()[i].shapes["0"].geometry.x+","+anno.getAnnotations()[i].shapes["0"].geometry.y+ "},"
+    var annotation = anno.getAnnotations();
+    for (let i = 0;i < annotation.length; i++){
+      if(annotation[i].text =="")
+        annotation[i].text = "leaf";
+      ans=ans+ "{" + annotation[i].text +  "," + annotation[i].shapes["0"].geometry.height +","+annotation[i].shapes["0"].geometry.width+","+annotation[i].shapes["0"].geometry.x+","+annotation[i].shapes["0"].geometry.y+ "},"
     }
     annotationdata.annotationvalue = ans;
     this.presentimageannotated = -1;
     anno.destroy();
     this.uploadService.updateannotation(annotationdata).subscribe(res => {
-      console.log(res);
     });
 
   }
@@ -220,10 +228,19 @@ export class DashboardComponent implements OnInit {
       event.target.setAttribute("fallback", "true");
     }
   }
-    clearSearch()
+  clearSearch()
   {
     this.search = "";
     this.searchFamily("");
+  }
+  highlight(i)
+  {
+    if(i == this.presentleaf)
+      return "alert alert-success";
+  }
+  reset(){
+    this.searchdata ={'present': 1, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
+    this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   ngOnInit() {
   }

@@ -19,6 +19,10 @@
 .dashboard{
   padding: 5vh 10vw;
 }
+.reset{
+  margin-left: 40vw;
+  margin-top: 5vh;
+}
 html, body { 
   height: 100%;
   width:100%;
@@ -151,14 +155,19 @@ figure {
     text-align: center;
     border: 1px black;
     border-style: solid;
+    width: 15vw;
+    height: 26vh;
 }
 figure img{
   width: 15vw;
   height: 18vh;
 }
+.no-caption{
+  height: 18.2vh;
+}
 figure figcaption {
-  display: block;
   padding: 2px;
+  word-wrap: break-word;
   }
 .glyphicon {
       pointer-events: all;

@@ -114,8 +114,7 @@ export class UploadService {
     .post(this.deletefamilyserver, family);
   }
   updateannotation(uploadinfo) {
-    console.log(uploadinfo);
-    return this.http
+        return this.http
       .post(this.annotationserver, uploadinfo).map(res => {
         res.json();
       });
