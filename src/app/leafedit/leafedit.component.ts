@@ -95,13 +95,17 @@ export class LeafeditComponent implements OnInit {
 
       });
     });
+    if(this.checkuserloggedin())
     anno.makeAnnotatable(document.getElementById('blah'));
   }
   myFunction() {
     let ans = '';
-    for (let i = 0;i < anno.getAnnotations().length; i++){
-      ans=ans+ "{" + anno.getAnnotations()[i].text +  "," + anno.getAnnotations()[i].shapes["0"].geometry.height +","+anno.getAnnotations()[i].shapes["0"].geometry.width+","+anno.getAnnotations()[i].shapes["0"].geometry.x+","+anno.getAnnotations()[i].shapes["0"].geometry.y+ "},"
-    }
+    var annotation = anno.getAnnotations();
+    for (let i = 0;i < annotation.length; i++){
+      if(annotation[i].text =="")
+        annotation[i].text = "leaf";
+      ans=ans+ "{" + annotation[i].text +  "," + annotation[i].shapes["0"].geometry.height +","+annotation[i].shapes["0"].geometry.width+","+annotation[i].shapes["0"].geometry.x+","+annotation[i].shapes["0"].geometry.y+ "},"
+      }
     this.leafvalues.annotationtext = ans;
     console.log(anno.getAnnotations());
   }
