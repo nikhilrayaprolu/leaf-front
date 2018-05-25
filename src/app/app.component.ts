@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AuthenticationService} from "./services/authentication.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -8,13 +9,18 @@ import {AuthenticationService} from "./services/authentication.service";
 })
 export class AppComponent {
   title = 'app';
+  constructor(private authenticationservice: AuthenticationService, private router: Router){
+
+  }
   logout() {
     localStorage.removeItem('currentUser');
   }
   checkloggedin() {
     return this.authenticationservice.checkuserloggedin()
   }
-  constructor(private authenticationservice: AuthenticationService){
+  speciesList(){
+    var searchdata = {'present': 2, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
 
+    this.router.navigate(['/dashboard'], {queryParams: searchdata});
   }
 }

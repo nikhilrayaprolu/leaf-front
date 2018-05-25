@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   image_path = server + '/final_uploads/';
   fallback_path = server + '/uploads/';
   items: any;
+  type = 1;
   presentitemcount = 50;
   presentid: any;
   totalnumberofavailablespecies = 0;
@@ -37,7 +38,8 @@ export class DashboardComponent implements OnInit {
   presentedit = 1;
   all_families = [];
   search="";
-  searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
+  searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
+
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
       if(this.checkuserloggedin())
@@ -87,6 +89,7 @@ export class DashboardComponent implements OnInit {
       this.family = res;
       this.all_families=res;
     });
+    console.log(this.family);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   searchFamily(value){
@@ -111,6 +114,11 @@ export class DashboardComponent implements OnInit {
     else
       this.items = [];
 }
+  setType(type)
+  {
+    this.type = type;
+    console.log(this.type);
+  }
   getAllUnAnnoted(num) {
     this.searchdata.present = num;
     this.showleaftypes = num;

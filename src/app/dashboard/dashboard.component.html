@@ -68,7 +68,7 @@
     <table class="table" *ngIf="showleaftypes==1">
       <thead>
       <tr>
-        <th *ngIf = "items?.length">Leaf Scientific Name</th>
+        <th>Leaf Scientific Name</th>
       </tr>
       </thead>
       <tbody>
@@ -81,7 +81,7 @@
     <div class="col-sm-7 col-md-7 photo-list" *ngIf="showleaftypes==1">
       <div class="search-results" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="300" (scrolled)="onScroll()">
       </div>
-        <h2 class ="text-center" *ngIf ="presentleaf!=-1 && items?.length"> {{family[presentleaf].scientificName}} </h2>
+        <h2 class ="text-center" *ngIf ="presentleaf!=-1"> {{family[presentleaf].scientificName}} </h2>
         <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
@@ -89,9 +89,9 @@
             <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
           </figure>
             <div class="card-footer">
-              <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin()">Annotate</button>
-              <button (click)="imageprofile(i)" *ngIf="checkuserloggedin()">Edit</button>
-              <button  (click)="imageprofile(i)" *ngIf="!checkuserloggedin()">View</button>
+              <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin() && (type==2||type==3)">Annotate</button>
+              <button (click)="imageprofile(i)" *ngIf="checkuserloggedin() && type == 2">Edit</button>
+              <button  (click)="imageprofile(i)" *ngIf="type == 1">View</button>
               <button  (click)="savepresentannotation()" *ngIf="presentimageannotated == i && checkuserloggedin()">AnnotationComplete</button>
             </div>
           </div>
@@ -193,15 +193,15 @@
     <main role="main" class="col-sm-12 ml-sm-auto col-md-12 dashboard-wrapper">
       <h1 class= "text-center">Dashboard</h1>
       <section class="text-center placeholders dashboard">
-        <div [ngClass] = "logged" class="placeholder pointer" (click)="getAllFamily(2)" >
+        <div [ngClass] = "logged" class="placeholder pointer" (click)="getAllFamily(2); setType(1)" >
           <img src="assets/images/catalogue.jpg" width="300" height="300" class="img-responsive" style = "margin:auto" alt="Generic placeholder thumbnail">
           <h4>Catalogue</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)" >
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2); setType(2)" >
           <img src="assets/images/tag.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Tag New Images</h4>
         </div>
-        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2)">
+        <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2); setType(3)">
           <img src="assets/images/annotate.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
           <h4>Annotate New Images</h4>
         </div>

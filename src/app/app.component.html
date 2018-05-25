@@ -6,6 +6,9 @@
     <ul class="nav navbar-nav">
       <li><a [routerLink]="['upload']">Upload</a></li>
     </ul>
+    <ul class="nav navbar-nav">
+      <li><a class ="pointer" (click) ="speciesList()">Species List</a></li>
+    </ul>
     <ul class="nav navbar-nav" style="float: right">
       <li><a [routerLink]="['login']" (click)="logout()" *ngIf="checkloggedin()">Logout</a></li>
       <li><a [routerLink]="['login']" *ngIf="!checkloggedin()">Login</a></li>
