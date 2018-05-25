@@ -239,8 +239,13 @@ export class DashboardComponent implements OnInit {
       return "alert alert-success";
   }
   reset(){
-    this.searchdata ={'present': 1, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
+    this.searchdata ={'present': 1, 'imageid': this.family[0]._id, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
+  }
+  getFontSize(value)
+  {
+    let styles = {'font-size': (value.length > 40)?'12px':((value.length > 30)?'13px':'15px')};
+    return styles;
   }
   ngOnInit() {
   }

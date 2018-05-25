@@ -95,6 +95,7 @@ export class LeafeditComponent implements OnInit {
 
       });
     });
+    if(this.checkuserloggedin())
     anno.makeAnnotatable(document.getElementById('blah'));
   }
   myFunction() {

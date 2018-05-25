@@ -120,7 +120,6 @@
       <img [src] ='image_path + leafvalues.leafname' (error) = "changeSource($event, leafvalues.leafname)" id="blah"  width="200" height="200" /><br>
       <button type="button" (click)="myFunction()" *ngIf="checkuserloggedin()" class="btn btn-danger"><span class="btn-text">Update Annotation</span></button>
       <div>
-      <button type="button" (click)="presentedit = 0 && submitUpload()" class="btn btn-danger" *ngIf="presentedit == 1">Save</button>
       </div>
   </form>
 </div>

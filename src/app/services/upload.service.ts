@@ -88,8 +88,7 @@ export class UploadService {
       username = 'guest';
     }
     return this.http
-      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted, username: username, userglobal: userglobal, level: level , annotation: annotation, disease: disease, tagging: tagging }).map(res => {0
-      console.log(res.json());
+      .post(this.leavesoffamily, {id: id, presentcount: presentcount, count: count, annoted: annoted, username: username, userglobal: userglobal, level: level , annotation: annotation, disease: disease, tagging: tagging }).map(res => {
         return res.json();
       });
   }

@@ -58,7 +58,7 @@
           <figure class = "pointer">
           <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
           <figcaption>
-          <h5><b>{{item.scientificName}}</b></h5>
+          <p [ngStyle] = "getFontSize(item.scientificName)"><b>{{item.scientificName}}</b></p>
         </figcaption>
         </figure>
         </div>
@@ -73,7 +73,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let name of family; let i =index" [ngClass] = "highlight(i)" class="query-suggestions" (click)="FamilyLeaves(name._id)">
-        <td *ngIf = "name.leaves?.length && items?.length"><a class="suggestions pointer">{{name.scientificName}}</a></td>
+        <td *ngIf = "name.leaves?.length"><a class="suggestions pointer">{{name.scientificName}}</a></td>
       </tr>
       </tbody>
     </table>
