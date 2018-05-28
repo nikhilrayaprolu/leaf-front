@@ -32,19 +32,19 @@
       </div>
       <div [ngClass] = "optionslogged" *ngIf="checkuserloggedin()">
 
-      <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.annotation" (change)="getAllFamily(showleaftypes)">
-        <option value="All">Annotation All </option>
-        <option value="true">Annotation Yes </option>
-        <option value="false">Annotation No </option>
-      </select>
-      </div>
-      <div [ngClass] = "optionslogged" *ngIf="checkuserloggedin()">
-
         <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.tagging" (change)="getAllFamily(showleaftypes)">
           <option value="All">Tagging All </option>
           <option value="true">Tagging Yes </option>
           <option value="false">Tagging No </option>
         </select>
+      </div>
+      
+      <div [ngClass] = "optionslogged" *ngIf="checkuserloggedin()">
+      <select class="selectpicker form-control col-md-3" name="annotation" [(ngModel)] = "searchdata.annotation" (change)="getAllFamily(showleaftypes)">
+        <option value="All">Annotation All </option>
+        <option value="true">Annotation Yes </option>
+        <option value="false">Annotation No </option>
+      </select>
       </div>
       <div class ="reset">
       <button class="btn btn-danger" type="reset" (click)="reset()">Reset</button>
@@ -102,8 +102,8 @@
     <div class="col-sm-3 col-sm-3 mt-3 edit-list" *ngIf="showleaftypes == 1 && items?.length">
       <form ngNativeValidate  *ngIf="family && family[presentleaf]">
         <div class="options">
-        <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin()">Delete</button>
-        <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin()">Edit</button>
+        <button type="button" (click)="deletefamily()" class="btn btn-danger" *ngIf="checkuserloggedin() && type!=1">Delete</button>
+        <button type="button" (click)="editfamily()" class="btn btn-danger" *ngIf="presentedit == 1 && checkuserloggedin() && type!=1">Edit</button>
         <button type="button" (click)="savefamily()" class="btn btn-danger" *ngIf="presentedit == 0 && checkuserloggedin()">Save</button>
       </div>
         <div class = "form-group">

@@ -4,14 +4,19 @@
       <a class="navbar-brand" href="#">LeafNet</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a [routerLink]="['upload']">Upload</a></li>
-    </ul>
-    <ul class="nav navbar-nav">
       <li><a class ="pointer" (click) ="speciesList()">Species List</a></li>
     </ul>
+    <ul class="nav navbar-nav">
+      <li><a [routerLink]="['upload']">Upload</a></li>
+    </ul>
+    <ul class="nav navbar-nav" >
+      <li><a [routerLink]="['manage']" *ngIf="checkifadmin()">Manage Users</a></li>
+    </ul>
     <ul class="nav navbar-nav" style="float: right">
+      <li><a [routerLink]="['password']" *ngIf="checkloggedin()">Change Password</a></li>
       <li><a [routerLink]="['login']" (click)="logout()" *ngIf="checkloggedin()">Logout</a></li>
       <li><a [routerLink]="['login']" *ngIf="!checkloggedin()">Login</a></li>
+      <li><a [routerLink]="['signup']" *ngIf="!checkloggedin()">Sign Up</a></li>
     </ul>
   </div>
 </nav>

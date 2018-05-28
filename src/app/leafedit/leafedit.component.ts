@@ -27,6 +27,7 @@ export class LeafeditComponent implements OnInit {
     pictureSeason: '',
     leafHealth: '',
     Disease: '',
+    location: '',
     Description: '',
     AnnotationComplete: 'false',
     annotationtext: '',
@@ -89,8 +90,7 @@ export class LeafeditComponent implements OnInit {
     this.leafvalues.leafMargin = result.leafMargin;
     this.leafvalues.leafDivision = result.leafDivision;
     this.leafvalues.Description = result.Description;
-
-
+    this.leafvalues.location = result.location;
   }
   ngOnInit() {
     this.route.params.subscribe(params => {

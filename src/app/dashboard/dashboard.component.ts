@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
   presentedit = 1;
   all_families = [];
   search="";
-  searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
+  searchdata = {'present': 0, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'};
 
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
@@ -117,7 +117,10 @@ export class DashboardComponent implements OnInit {
   setType(type)
   {
     this.type = type;
-    console.log(this.type);
+    if(type == 2)
+      this.searchdata.tagging = 'false';
+    else if(type == 3)
+      this.searchdata.annotation = 'false';
   }
   getAllUnAnnoted(num) {
     this.searchdata.present = num;

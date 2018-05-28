@@ -13,10 +13,14 @@ export class AppComponent {
 
   }
   logout() {
+    console.log('Hey');
     localStorage.removeItem('currentUser');
   }
   checkloggedin() {
     return this.authenticationservice.checkuserloggedin()
+  }
+  checkifadmin(){
+      return this.authenticationservice.checkifadmin()
   }
   speciesList(){
     var searchdata = {'present': 2, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};

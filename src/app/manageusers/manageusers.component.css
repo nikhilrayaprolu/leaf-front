@@ -1,0 +1,15 @@
+button{
+	padding: 1px;
+}
+select{
+	display: inline;
+}
+.search{
+	margin-top: 2vh;
+}
+table{
+	margin-top: 10vh;
+}
+.glyphicon {
+      pointer-events: all;
+    }

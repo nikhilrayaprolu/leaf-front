@@ -3,34 +3,32 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
-  moduleId: module.id,
-  templateUrl: 'login.component.html'
+  selector: 'app-password',
+  templateUrl: './password.component.html',
+  styleUrls: ['./password.component.css']
 })
-
-export class LoginComponent implements OnInit {
+export class PasswordComponent implements OnInit {
   model: any = {};
   loading = false;
   error = '';
+  checkSuccess = false;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    // reset login status
-    this.authenticationService.logout();
   }
 
-  login() {
+  changePassword() {
     this.loading = true;
-    this.authenticationService.login(this.model.username, this.model.password)
+    this.authenticationService.changePassword(JSON.parse(localStorage.getItem('currentUser')).username, this.model.password)
       .subscribe(result => {
         if (result === true) {
-          // login successful
-          this.router.navigate(['/']);
+        	this.checkSuccess = true;
+        	this.loading = false;
         } else {
-          // login failed
-          this.error = 'Invalid credentials or account not approved';
+          this.error = 'Password has not been changed. Please try again!';
           this.loading = false;
         }
       });
