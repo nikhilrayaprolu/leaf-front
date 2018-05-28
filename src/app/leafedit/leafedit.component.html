@@ -89,7 +89,13 @@
              [(ngModel)] = "leafvalues.Disease" name = "Disease">
 
     </div>
+    <div class = "form-group">
+      <label for = "location">Location</label>
+      <p><span *ngIf="presentedit == 0">{{leafvalues.location}}</span>
+      <input type = "text" class = "form-control" id = "location" required *ngIf="presentedit == 1"
+             [(ngModel)] = "leafvalues.location" name = "location">
 
+    </div>
     <div class="form-group">
       <label>Annotation Complete:</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.AnnotationComplete}}</span>

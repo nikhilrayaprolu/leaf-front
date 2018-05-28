@@ -9,6 +9,8 @@ export class UploadService {
   server = server;
   uploadserver = this.server + '/upload';
   updateserver = this.server + '/update';
+  userserver = this.server+'/allusers';
+  approveserver = this.server+'/approve';
   familyscientificserver = this.server + '/familybyscientific';
   familycommonserver = this.server + '/familybycommon';
   familyallserver = this.server + '/getAllFamily';
@@ -19,6 +21,7 @@ export class UploadService {
   annotationserver = this.server + '/annotationupdate';
   updatefamilyserver = this.server + '/updatefamily';
   deletefamilyserver = this.server + '/deletefamily';
+  signupserver = this.server + '/authentication/signup'
   constructor(
     private http: Http,
     private jsonp: Jsonp,
@@ -116,6 +119,27 @@ export class UploadService {
         return this.http
       .post(this.annotationserver, uploadinfo).map(res => {
         res.json();
+      });
+  }
+  signUp(username, password, name, email, affiliation){
+    return this.http
+      .post(this.signupserver, {username: username, password: password, name: name, email: email, affiliation: affiliation}).map(res => {
+      return res.json().success;
+      });
+  }
+
+  getUsers(approved)
+  {
+    return this.http
+      .post(this.userserver, {approved: approved}).map(res => {
+        return res.json();
+      });
+  }
+  approveUser(username, type, approved)
+  {
+    return this.http
+      .post(this.approveserver, {username:username, type: type, approved: approved}).map(res => {
+        return res.json().success;
       });
   }
 }

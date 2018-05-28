@@ -16,6 +16,7 @@ export class LeafeditComponent implements OnInit {
   leafid: number;
   leafdata: any;
   autoresults: any;
+  family: any;
   leafvalues: any = {
     scientificName: '',
     commonName: '',
@@ -26,6 +27,7 @@ export class LeafeditComponent implements OnInit {
     pictureSeason: '',
     leafHealth: '',
     Disease: '',
+    location: '',
     Description: '',
     AnnotationComplete: 'false',
     annotationtext: '',
@@ -58,8 +60,13 @@ export class LeafeditComponent implements OnInit {
     console.log('Inside Submit Upload');
     this.leafvalues.lastedituser = JSON.parse(localStorage.getItem('currentUser')).username;
     console.log(this.leafvalues);
+    this.uploadservice.getAllFamily().subscribe(res => {
+      this.family = res;
+    });
     this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
-      this.router.navigate(['/']);
+      this.family = this.family.filter(family => (family.scientificName == this.leafvalues.scientificName));
+      var searchdata = {'present': 1, 'imageid': this.family[0]._id, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
+      this.router.navigate(['/dashboard'], {queryParams: searchdata});
     });
     this.presentedit = 1;
   }
@@ -83,8 +90,7 @@ export class LeafeditComponent implements OnInit {
     this.leafvalues.leafMargin = result.leafMargin;
     this.leafvalues.leafDivision = result.leafDivision;
     this.leafvalues.Description = result.Description;
-
-
+    this.leafvalues.location = result.location;
   }
   ngOnInit() {
     this.route.params.subscribe(params => {

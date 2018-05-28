@@ -24,7 +24,10 @@ export class UploadComponent implements OnInit {
     Description: '',
     AnnotationComplete: 'false',
     Utility: '',
+    location:'',
     listofimages: [],
+    reccoimages: [],
+    noreccoimages: [],
     annotationtext: '',
     family: '',
     createduser: '',
@@ -50,6 +53,7 @@ export class UploadComponent implements OnInit {
     if(this.leafvalues.scientificName == '' || this.leafvalues.commonName == '' || !this.leafvalues.pictureType || !this.leafvalues.pictureSeason || !this.leafvalues.AnnotationComplete){
       this.fillallfields = 1;
     } else {
+      console.log(this.leafvalues);
       this.uploadService.startUploadJob(this.leafvalues).subscribe(res => {
         if(res && res.oneleafid){
           this.router.navigate(['/leafedit', res.oneleafid]);
@@ -78,6 +82,7 @@ export class UploadComponent implements OnInit {
     this.leafvalues.leafShape = result.leafShape;
     this.leafvalues.leafMargin = result.leafMargin;
     this.leafvalues.leafDivision = result.leafDivision;
+    this.leafvalues.location = result.location;
     this.leafvalues.Description = result.Description;
 
 
@@ -87,6 +92,7 @@ export class UploadComponent implements OnInit {
       const responsePath = JSON.parse(response);
       console.log(response, responsePath);
       this.leafvalues.listofimages.push(responsePath);
+      this.leafvalues.noreccoimages.push(responsePath);
     };
   }
 

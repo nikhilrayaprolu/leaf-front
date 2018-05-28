@@ -15,12 +15,18 @@ import { LoginComponent } from './login/login.component';
 import {AuthGuard} from "./services/auth.guard";
 import {AuthenticationService} from "./services/authentication.service";
 import {UserService} from "./services/user.service";
+import { SignupComponent } from './signup/signup.component';
+import { ManageusersComponent } from './manageusers/manageusers.component';
+import { PasswordComponent } from './password/password.component';
 
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'upload', component: UploadComponent, canActivate: [AuthGuard]},
+  {path: 'manage', component: ManageusersComponent, canActivate: [AuthGuard]},
   {path: 'leafedit/:id', component: LeafeditComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'password', component: PasswordComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: '' }
 ];
 @NgModule({
@@ -30,7 +36,9 @@ const appRoutes: Routes = [
     UploadComponent,
     LeafeditComponent,
     LoginComponent,
-
+    SignupComponent,
+    ManageusersComponent,
+    PasswordComponent,
   ],
   imports: [
     BrowserModule,

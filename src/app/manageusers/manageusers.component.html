@@ -1,0 +1,76 @@
+<div class = "container">
+<h1 class="text-center"> Manage Users </h1>
+<h2> Requests: </h2>
+<h3 class="text-center" *ngIf="newusers?.length == 0"> No new requests! </h3>
+<table class="table table-hover" *ngIf="newusers?.length>0">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Username</th>
+      <th scope="col">E-Mail</th>
+      <th scope="col">Affiliation</th>
+      <th scope="col">Privilege</th>
+      <th scope="col">Approval</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of newusers; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{user.name}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.affiliation}}</td>
+      <td>
+      	<select class="selectpicker form-control" [ngClass] ="'type'+i" name="type">
+        <option value="regular"> Regular </option>
+        <option value="admin"> Admin </option>
+      </select></td>
+      <td><button class ="alert alert-success" (click) = "approve(user.username, i,'accept')">Accept</button> / <button class ="alert alert-danger" (click) = "approve(user.username, i,'reject')">Reject</button></td>
+    </tr>  
+  </tbody>
+</table>
+<h2>Current Users:</h2>         
+  <div *ngIf="all_users?.length>0" class="form-group has-feedback">
+  <input type="text" class="form-control search col-md-3" placeholder ="Search Users" [(ngModel)]="search" (keyup)=searchUsers(search) /> 
+  <i class ="glyphicon glyphicon-remove-circle search form-control-feedback" (click)=clearSearch()></i> 
+  </div>
+	<h3 class="text-center" *ngIf="existusers?.length == 0"> No users! </h3>
+	<table class="table table-hover" *ngIf="existusers?.length>0">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" class ="col-sm-1">#</th>
+      <th scope="col" class ="col-sm-1">Name</th>
+      <th scope="col" class ="col-sm-1">Username</th>
+      <th scope="col" class ="col-sm-1">E-Mail</th>
+      <th scope="col" class ="col-sm-1">Affiliation</th>
+      <th scope="col" class ="col-sm-2">Privilege</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of existusers; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <td>{{user.name}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.affiliation}}</td>
+      <td class ="edit">{{user.type}}
+      <button class = "alert alert-info" (click)="edit(i)">
+      Edit
+      <span class="glyphicon glyphicon-edit"></span>
+      </button>
+      </td>
+      <td class ="save hidden"> 
+        <select class="selectpicker form-control" style="max-width: 60%" [ngClass] ="'type'+i" name="type">
+        <option value="regular"> Regular </option>
+        <option value="admin"> Admin </option>
+      </select>
+      <button class = "alert alert-info" (click) = "approve(user.username, i, 'accept'); save(i)">
+        Save
+        <span class="glyphicon glyphicon-ok"></span>
+      </button>
+    </td>
+    </tr>  
+  </tbody>
+</table>
+</div>
