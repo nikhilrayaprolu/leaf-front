@@ -28,7 +28,7 @@ export class ManageusersComponent implements OnInit {
   	var type = e.options[e.selectedIndex].value;
   	this.uploadService.approveUser(username, type, status).subscribe(res =>{
   	if(res === true)
-      window.location.reload();
+        this.router.navigate(['/']);
   	});
   }
   edit(i)

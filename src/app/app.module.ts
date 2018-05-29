@@ -18,6 +18,7 @@ import {UserService} from "./services/user.service";
 import { SignupComponent } from './signup/signup.component';
 import { ManageusersComponent } from './manageusers/manageusers.component';
 import { PasswordComponent } from './password/password.component';
+import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
 
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent},
@@ -51,6 +52,7 @@ const appRoutes: Routes = [
   ],
   providers: [UploadService, AuthGuard,
     AuthenticationService,
+    Location, {provide: LocationStrategy, useClass: HashLocationStrategy},
     UserService],
   bootstrap: [AppComponent]
 })

@@ -111,20 +111,20 @@
       <label>Shape:</label>
       <div class="input-group">
         <select class="selectpicker form-control" [(ngModel)] = "leafvalues.leafShape" name="leafShape" required>
-          <option value="Ovate">Ovate</option>
-          <option value="Obovate">Obovate</option>
-          <option value="Lanceolate">Lanceolate</option>
-          <option value="Oblanceolate">Oblanceolate</option>
-          <option value="Cordate">Cordate</option>
-          <option value="Obcordate">Obcordate</option>
-          <option value="Elliptical">Elliptical</option>
-          <option value="Oblong">Oblong</option>
-          <option value="Cuneate">Cuneate</option>
-          <option value="Linear">Linear</option>
-          <option value="Peltate">Peltate</option>
-          <option value="Spatulate">Spatulate</option>
-          <option value="Reniform">Reniform</option>
-          <option value="Hastate">Hastate</option>
+              <option value="Cordate">Cordate</option>
+              <option value="Cuneate">Cuneate</option>
+              <option value="Elliptical">Elliptical</option>
+              <option value="Hastate">Hastate</option>
+              <option value="Lanceolate">Lanceolate</option>
+              <option value="Linear">Linear</option>
+              <option value="Obcordate">Obcordate</option>
+              <option value="Oblanceolate">Oblanceolate</option>
+              <option value="Oblong">Oblong</option>
+              <option value="Obovate">Obovate</option>
+              <option value="Ovate">Ovate</option>
+              <option value="Peltate">Peltate</option>
+              <option value="Reniform">Reniform</option>
+              <option value="Spatulate">Spatulate</option>
         </select>
       </div>
     </div>
@@ -134,6 +134,7 @@
         <select class="selectpicker form-control" name="completed" [(ngModel)] = "leafvalues.leafMargin">
           <option value="Entire">Entire</option>
           <option value="Dentate">Dentate</option>
+          <option value="Crenate">Crenate</option>
           <option value="Serrate">Serrate</option>
           <option value="Incised">Incised</option>
         </select>
@@ -144,12 +145,7 @@
       <div class="input-group">
         <select class="selectpicker form-control" name="division" [(ngModel)] = "leafvalues.leafDivision">
           <option value="Simple">Simple</option>
-          <option value="Compound (Pinnate) Bipennate">Compound (Pinnate) Bipennate</option>
-          <option value="Compound (Pinnate) Tripennate">Compound (Pinnate) Tripennate</option>
-          <option value="Compound (Pinnate) Decompund">Compound (Pinnate) Decompund</option>
-          <option value="Compound (Palmate) Unifoliate">Compound (Palmate) Unifoliate</option>
-          <option value="Compound (Palmate) Bifoliate">Compound (Palmate) Bifoliate</option>
-          <option value="Compound (Palmate) Trifoliate">Compound (Palmate) Trifoliate</option>
+          <option value="Compound">Compound</option>
         </select>
       </div>
     </div>

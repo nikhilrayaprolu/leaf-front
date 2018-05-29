@@ -1,6 +1,6 @@
 <div>
   <div class ="row">
-    <div class="row options-list" *ngIf="showleaftypes==1">
+    <div class="row options-list" *ngIf="showleaftypes==1 && type!= 1">
       <div [ngClass] = "optionslogged">
         <div class="form-group has-feedback">
         <input type="text" class="form-control col-md-3" placeholder ="Search Species" [(ngModel)]="search" (keyup)=searchFamily(search) /> 
@@ -56,7 +56,7 @@
       <div *ngFor="let item of family;let i = index">
         <div (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
           <figure class = "pointer">
-          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname">
+          <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname" >
           <figcaption>
           <p [ngStyle] = "getFontSize(item.scientificName)"><b>{{item.scientificName}}</b></p>
         </figcaption>
@@ -86,12 +86,13 @@
         <div *ngFor="let item of items;let i = index">
           <div class="card card-inverse card-info">
             <figure class = "no-caption">
+            <a [href]='(image_path+item.leafname)' [attr.data-lightbox]="'image'+i">
             <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+            </a>
           </figure>
             <div class="card-footer">
               <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin() && (type==2||type==3)">Annotate</button>
               <button (click)="imageprofile(i)" *ngIf="checkuserloggedin() && type == 2">Edit</button>
-              <button  (click)="imageprofile(i)" *ngIf="type == 1">View</button>
               <button  (click)="savepresentannotation()" *ngIf="presentimageannotated == i && checkuserloggedin()">AnnotationComplete</button>
             </div>
           </div>
@@ -123,20 +124,20 @@
           <label>Shape:</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafShape}}</span>
             <select class="selectpicker form-control" [(ngModel)] = "family[presentleaf].leafShape" name="leafShape" required *ngIf="presentedit == 0">
-              <option value="Ovate">Ovate</option>
-              <option value="Obovate">Obovate</option>
-              <option value="Lanceolate">Lanceolate</option>
-              <option value="Oblanceolate">Oblanceolate</option>
               <option value="Cordate">Cordate</option>
-              <option value="Obcordate">Obcordate</option>
-              <option value="Elliptical">Elliptical</option>
-              <option value="Oblong">Oblong</option>
               <option value="Cuneate">Cuneate</option>
-              <option value="Linear">Linear</option>
-              <option value="Peltate">Peltate</option>
-              <option value="Spatulate">Spatulate</option>
-              <option value="Reniform">Reniform</option>
+              <option value="Elliptical">Elliptical</option>
               <option value="Hastate">Hastate</option>
+              <option value="Lanceolate">Lanceolate</option>
+              <option value="Linear">Linear</option>
+              <option value="Obcordate">Obcordate</option>
+              <option value="Oblanceolate">Oblanceolate</option>
+              <option value="Oblong">Oblong</option>
+              <option value="Obovate">Obovate</option>
+              <option value="Ovate">Ovate</option>
+              <option value="Peltate">Peltate</option>
+              <option value="Reniform">Reniform</option>
+              <option value="Spatulate">Spatulate</option>
             </select>
           </p>
         </div>
@@ -146,6 +147,7 @@
 
             <select class="selectpicker form-control" name="completed" [(ngModel)] = "family[(presentleaf)].leafMargin" *ngIf="presentedit == 0">
               <option value="Entire">Entire</option>
+              <option value="Crenate">Crenate</option>
               <option value="Dentate">Dentate</option>
               <option value="Serrate">Serrate</option>
               <option value="Incised">Incised</option>
@@ -157,12 +159,7 @@
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafDivision}}</span>
             <select class="selectpicker form-control" name="division" [(ngModel)] = "family[presentleaf].leafDivision" *ngIf="presentedit == 0">
               <option value="Simple">Simple</option>
-              <option value="Compound (Pinnate) Bipennate">Compound (Pinnate) Bipennate</option>
-              <option value="Compound (Pinnate) Tripennate">Compound (Pinnate) Tripennate</option>
-              <option value="Compound (Pinnate) Decompund">Compound (Pinnate) Decompund</option>
-              <option value="Compound (Palmate) Unifoliate">Compound (Palmate) Unifoliate</option>
-              <option value="Compound (Palmate) Bifoliate">Compound (Palmate) Bifoliate</option>
-              <option value="Compound (Palmate) Trifoliate">Compound (Palmate) Trifoliate</option>
+              <option value="Compound">Compound</option>
             </select>
           </p>
         </div>
@@ -207,7 +204,7 @@
         </div>
         <div [ngClass] = "logged">
         <div>
-          <h4>Total Number of leaves</h4>
+          <h4>Total Number of Species</h4>
           <p>{{dashboardstatistics.familycount}}</p>
         </div>
         <div>
