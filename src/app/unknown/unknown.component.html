@@ -1,117 +1,6 @@
-
-<div class="container">
-
-  <div class="row">
-
-    <div class="col-md-3">
-      <h3>Select files</h3>
-      Multiple
-      <input type="file" title=" " ng2FileSelect [uploader]="uploader" multiple  /><br/>
-    </div>
-    <div class="col-md-9" style="margin-bottom: 40px">
-
-      <h3>Upload queue</h3>
-      <p>Queue length: {{ uploader?.queue?.length }}</p>
-
-      <table class="table">
-        <thead>
-        <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
-          <th>Progress</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of uploader.queue">
-          <td><strong>{{ item?.file?.name }}</strong></td>
-          <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-          <td *ngIf="uploader.isHTML5">
-            <div class="progress" style="margin-bottom: 0;">
-              <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-            </div>
-          </td>
-          <td class="text-center">
-            <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-            <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-          </td>
-          <td nowrap>
-            <button type="button" class="btn btn-success btn-xs"
-                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-              <span class="glyphicon glyphicon-upload"></span> Upload
-            </button>
-            <button type="button" class="btn btn-danger btn-xs"
-                    (click)="item.remove()">
-              <span class="glyphicon glyphicon-trash"></span> Remove
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-
-      <div>
-        <div>
-          Queue progress:
-          <div class="progress" style="">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-success btn-s"
-                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-          <span class="glyphicon glyphicon-upload"></span> Upload all
-        </button>
-        <button type="button" class="btn btn-danger btn-s"
-                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-          <span class="glyphicon glyphicon-trash"></span> Remove all
-        </button>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div class = "container">
-   <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Do you know the details of the species?</h5>
-        <button class="btn btn-primary"(click) = "changeUnknown(0)">Yes</button>
-        <button class="btn btn-primary" (click) = "changeUnknown(1)">No</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class = "container" *ngIf = "unknown==1">
-  <h1>Unknown Leaf Upload </h1>
-  <div class="col-md-6">
-  <form ngNativeValidate>
-    <div class="form-group">
-      <label>Picture Type</label>
-      <div class="input-group">
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required>
-          <option value="Level0">Level 0</option>
-          <option value="Level1">Level 1</option>
-          <option value="Level2">Level 2</option>
-          <option value="Level3">Level 3</option>
-        </select>
-      </div>
-    </div>
-    <div class = "form-group">
-      <label for = "location">Location</label>
-      <input type = "text" class = "form-control" id = "scientificName" required
-             [(ngModel)] = "leafvalues.location" name = "location">
-    </div>
-    <div id="submitBtn">
-      <button (click)="submitUnknownUpload()" class="btn btn-danger"><span class="btn-text">Submit Leaf</span></button>
-    </div>
-  </form>
-</div>
-</div>
-
-<div class = "container" *ngIf ="unknown==0">
-  <h1>Leaf Upload</h1>
-  <div class="col-md-6">
+	<h1 class ="text-center"> Unknown Leaves </h1>
+<div class="col-sm-3 col-md-3 edit-list">
+  <h2> Mark and add species details! </h2>
   <form ngNativeValidate>
     <div class = "form-group">
       <label for = "scientificName">Scientific Name</label>
@@ -247,11 +136,28 @@
       </div>
     </div>
     <div id="submitBtn">
-      <button (click)="submitUpload()" class="btn btn-danger"><span class="btn-text">Submit Leaf</span></button>
+      <button (click)="submitUpload()" class="btn btn-danger"><span class="btn-text">Add details</span></button>
     </div>
   </form>
 
 </div>
-</div>
 
-
+	<div class="col-sm-8 col-md-8 photo-list">
+        <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
+        <div *ngFor="let item of items;let i = index">
+          <div class="card card-inverse card-info">
+            <figure>
+            <a [href]='(image_path+item.leafname)' [attr.data-lightbox]="'image'+i">
+            <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+            </a>
+          </figure>
+          <br>
+          <figcaption class ="text-center">
+            <b>Picture type:</b> {{item.pictureType}}
+            <br>
+            <b>Location:</b> {{item.location}}
+            <br>
+            Mark: <input type="checkbox" [ngClass]="'check'+i"name="addleaf" (click)="addLeaf(item.leafname,i)">
+          </figcaption>
+         </div>
+  </div>

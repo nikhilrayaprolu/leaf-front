@@ -22,9 +22,14 @@ export class AppComponent {
   checkifadmin(){
       return this.authenticationservice.checkifadmin()
   }
+  checkifexpert(){
+      return this.authenticationservice.checkifexpert()
+  }
   speciesList(){
     var searchdata = {'present': 2, 'imageid': 0, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
 
     this.router.navigate(['/dashboard'], {queryParams: searchdata});
+  }
+  ngOnInit(){
   }
 }

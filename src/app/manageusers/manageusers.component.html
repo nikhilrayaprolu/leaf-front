@@ -24,6 +24,7 @@
       <td>
       	<select class="selectpicker form-control" [ngClass] ="'type'+i" name="type">
         <option value="regular"> Regular </option>
+        <option value="expert"> Expert </option>
         <option value="admin"> Admin </option>
       </select></td>
       <td><button class ="alert alert-success" (click) = "approve(user.username, i,'accept')">Accept</button> / <button class ="alert alert-danger" (click) = "approve(user.username, i,'reject')">Reject</button></td>
@@ -63,6 +64,7 @@
       <td class ="save hidden"> 
         <select class="selectpicker form-control" style="max-width: 60%" [ngClass] ="'type'+i" name="type">
         <option value="regular"> Regular </option>
+        <option value="expert"> Expert </option>
         <option value="admin"> Admin </option>
       </select>
       <button class = "alert alert-info" (click) = "approve(user.username, i, 'accept'); save(i)">

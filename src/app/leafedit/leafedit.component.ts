@@ -43,7 +43,12 @@ export class LeafeditComponent implements OnInit {
   }
   public deleteleaf() {
     this.uploadservice.deleteLeaf(this.leafid).subscribe(res => {
-      this.router.navigate(['/']);
+    this.uploadservice.getAllFamily().subscribe(res => {
+      this.family = res;
+      this.family = this.family.filter(family => (family.scientificName == this.leafvalues.scientificName));
+      var searchdata = {'present': 1, 'imageid': this.family[0]._id, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'false', 'type': 2};
+      this.router.navigate(['/dashboard'], {queryParams: searchdata});
+    });
     });
   }
   public checkuserloggedin() {
@@ -57,16 +62,16 @@ export class LeafeditComponent implements OnInit {
     }
   }
   public submitUpload() {
-    console.log('Inside Submit Upload');
+    console.log('After submitting');
     this.leafvalues.lastedituser = JSON.parse(localStorage.getItem('currentUser')).username;
     console.log(this.leafvalues);
     this.uploadservice.getAllFamily().subscribe(res => {
       this.family = res;
-    });
-    this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
+      this.uploadservice.startUpdateJob(this.leafvalues).subscribe(res => {
       this.family = this.family.filter(family => (family.scientificName == this.leafvalues.scientificName));
-      var searchdata = {'present': 1, 'imageid': this.family[0]._id, usertype:'Global', level: 'All', annotation: 'false', disease: 'All', tagging: 'false'};
+      var searchdata = {'present': 1, 'imageid': this.family[0]._id, usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'false', 'type': 2};
       this.router.navigate(['/dashboard'], {queryParams: searchdata});
+    });
     });
     this.presentedit = 1;
   }
@@ -97,6 +102,9 @@ export class LeafeditComponent implements OnInit {
       this.leafid = params['id'];
       this.uploadservice.getLeafById(this.leafid).subscribe(res => {
         this.leafvalues = res;
+        console.log('Upon loading');
+        console.log(this.leafvalues);
+        console.log(this.leafvalues.TaggingComplete);
         this.leafvalues.AnnotationComplete = this.leafvalues.AnnotationComplete.toString();
 
       });

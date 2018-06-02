@@ -8,7 +8,9 @@ import {server} from "../config";
 export class UploadService {
   server = server;
   uploadserver = this.server + '/upload';
-  updateserver = this.server + '/update';
+  updateserver = this.server + '/update'
+  unknownserver = this.server + '/unknownleaf';
+  getunknownserver = this.server + '/getallunknown';
   userserver = this.server+'/allusers';
   approveserver = this.server+'/approve';
   familyscientificserver = this.server + '/familybyscientific';
@@ -21,6 +23,7 @@ export class UploadService {
   annotationserver = this.server + '/annotationupdate';
   updatefamilyserver = this.server + '/updatefamily';
   deletefamilyserver = this.server + '/deletefamily';
+  deleteunknownserver = this.server + '/deleteunknown'
   signupserver = this.server + '/authentication/signup'
   constructor(
     private http: Http,
@@ -43,11 +46,16 @@ export class UploadService {
           return res.json();
       });
   }
+  startUnknownUploadJob(uploadinfo) {
+    console.log(uploadinfo);
+      return this.http
+        .post(this.unknownserver, uploadinfo).map(res => {
+          return res.json();
+      });
+  }
   deleteLeaf(id) {
     return this.http
-      .post(this.deleteLeafServer, {id: id}).map(res => {
-        res.json();
-      });
+      .post(this.deleteLeafServer, {id: id});
   }
   startUpdateJob(uploadinfo) {
     console.log(uploadinfo);
@@ -71,6 +79,12 @@ export class UploadService {
   getAllFamily() {
     return this.http
       .get(this.familyallserver).map(res => {
+        return res.json();
+      });
+  }
+  getAllUnknown() {
+    return this.http
+      .get(this.getunknownserver).map(res => {
         return res.json();
       });
   }
@@ -114,6 +128,10 @@ export class UploadService {
   deletefamily(family) {
   return this.http
     .post(this.deletefamilyserver, family);
+  }
+  deleteUnknown(unknowns) {
+  return this.http
+    .post(this.deleteunknownserver, {unknowns: unknowns});
   }
   updateannotation(uploadinfo) {
         return this.http

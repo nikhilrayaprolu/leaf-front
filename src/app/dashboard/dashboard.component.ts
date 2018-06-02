@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {server} from "../config";
 import {AuthenticationService} from "../services/authentication.service";
 declare var anno: any;
+declare var jquery:any;
+declare var $ :any;
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -42,6 +44,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
+      if(query['type'] != undefined)
+        this.type = query['type'];
       if(this.checkuserloggedin())
         {
           this.logged = "col-sm-3";
@@ -89,7 +93,6 @@ export class DashboardComponent implements OnInit {
       this.family = res;
       this.all_families=res;
     });
-    console.log(this.family);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   searchFamily(value){
@@ -107,7 +110,10 @@ export class DashboardComponent implements OnInit {
       this.searchdata.imageid = this.family[0]._id;
       if (this.showleaftypes === 1) {
         this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
-          this.items = res;
+        if(this.type == 1)
+        this.items = res.slice(0,5);
+        else
+        this.items = res;
         });
       }
     }
@@ -141,11 +147,17 @@ export class DashboardComponent implements OnInit {
     this.searchdata.imageid = id;
     if (this.showleaftypes === 1) {
       this.uploadService.getLeavesOfFamily(id, 0, 50, 'Both', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+      if(this.type == 1)
+        this.items = res.slice(0,5);
+      else
         this.items = res;
       });
     }
     if (this.showleaftypes === 2) {
       this.uploadService.getLeavesOfFamily(id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
+        if(this.type == 1)
+        this.items = res.slice(0,5);
+      else
         this.items = res;
       });
     }
@@ -236,6 +248,7 @@ export class DashboardComponent implements OnInit {
     if(event.target.getAttribute('fallback') == undefined)
     {
       event.target.src = this.fallback_path + name;
+      event.target.parentElement.href = this.fallback_path + name;
       event.target.setAttribute("fallback", "true");
     }
   }

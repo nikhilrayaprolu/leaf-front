@@ -30,6 +30,12 @@ export class AuthenticationService {
     else 
       return false;
   }
+  checkifexpert(){
+    if(this.usertype == "expert")
+      return true;
+    else 
+      return false;
+  }
   changePassword(username, password){
    return this.http.post(this.server + '/authentication/password',{ username: username, password: password }).map((response: Response) => {
    if(response.json().success === true)

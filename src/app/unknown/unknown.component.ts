@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import {FileUploader, FileSelectDirective, FileDropDirective} from 'ng2-file-upload';
 import {UploadService} from '../services/upload.service';
-import {Router} from '@angular/router';
 import {server} from "../config";
-const URL = server + '/api';
-declare var $: any;
+import {Router} from '@angular/router';
+
+declare var jquery:any;
+declare var $ :any;
+
 @Component({
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.css']
+  selector: 'app-unknown',
+  templateUrl: './unknown.component.html',
+  styleUrls: ['./unknown.component.css']
 })
-export class UploadComponent implements OnInit {
-  leafvalues: any = {
+export class UnknownComponent implements OnInit {
+  server = server;
+  image_path = server + '/final_uploads/';
+  fallback_path = server + '/uploads/';
+leafvalues: any = {
     scientificName: '',
     commonName: '',
     pictureType: 'Level0',
@@ -34,21 +38,38 @@ export class UploadComponent implements OnInit {
     lastedituser: '',
     TaggingComplete: 'false',
   };
+  leaflist = [];
   fillallfields = 0;
-  autoresults: any;
-  unknown = -1;
-  public uploader: FileUploader = new FileUploader({url: URL});
-  public hasBaseDropZoneOver = false;
-  public hasAnotherDropZoneOver = false;
-
-  public fileOverBase(e: any): void {
-    this.hasBaseDropZoneOver = e;
+  autoresults: any;  items: any;
+  constructor(private uploadService: UploadService, private router: Router) { }
+  changeSource(event, name)
+  {
+    if(event.target.getAttribute('fallback') == undefined)
+    {
+      event.target.src = this.fallback_path + name;
+      event.target.parentElement.href = this.fallback_path + name;
+      event.target.setAttribute("fallback", "true");
+    }
   }
-
-  public fileOverAnother(e: any): void {
-    this.hasAnotherDropZoneOver = e;
+  addLeaf(value,i){
+  	if($('.check'+i)[0].checked)
+    {
+  		this.leafvalues.listofimages.push([{filename: value}]);
+      this.leaflist.push(value);
+    }
+  	else{
+  	var index1 = this.leafvalues.listofimages.indexOf([{filename: value}]);
+  	if (index1 !== -1) this.leafvalues.listofimages.splice(index1, 1);
+    var index2 = this.leaflist.indexOf(value);
+    if (index2 !== -1) this.leaflist.splice(index2, 1);
+  	}
+    console.log(this.leafvalues);
+    }
+  ngOnInit() {
+  	this.items = this.uploadService.getAllUnknown().subscribe(res => {
+          this.items = res;
+          });
   }
-
   public submitUpload() {
     this.leafvalues.createduser = JSON.parse(localStorage.getItem('currentUser')).username;
     if(this.leafvalues.scientificName == '' || this.leafvalues.commonName == '' || !this.leafvalues.pictureType || !this.leafvalues.pictureSeason || !this.leafvalues.AnnotationComplete){
@@ -56,27 +77,17 @@ export class UploadComponent implements OnInit {
     } else {
       console.log(this.leafvalues);
       this.uploadService.startUploadJob(this.leafvalues).subscribe(res => {
-        if(res && res.oneleafid){
-          this.router.navigate(['/leafedit', res.oneleafid]);
-    } else {
-          this.router.navigate(['/'],{ queryParams: {present: 1, imageid: res.imageid, usertype: 'Global',level:'All', annotation:'All', disease:'All'}});
-        }
-
+        if(res){
+          console.log('Onwards to deletion');
+          this.uploadService.deleteUnknown(this.leaflist).subscribe(res => {  
+          }); 
+          this.router.navigate(['/'],{ queryParams: {present: 1, imageid: res.imageid, usertype: 'Global',level:'All', annotation:'All', tagging: 'false', disease:'All', type: 2}});
+      } 
       });
     }
 
   }
-  public submitUnknownUpload() {
-    this.leafvalues.createduser = JSON.parse(localStorage.getItem('currentUser')).username;
-      console.log(this.leafvalues);
-      this.uploadService.startUnknownUploadJob(this.leafvalues).subscribe(res => {
-        if(res.success){
-          this.router.navigate(['/unknown']);
-        }
-
-      });
-  }
-  public searchscientificName($event) {
+public searchscientificName($event) {
     this.uploadService.getFamilyByScientificName(this.leafvalues.scientificName).subscribe(res => {
       this.autoresults = res;
     });
@@ -98,19 +109,4 @@ export class UploadComponent implements OnInit {
     this.leafvalues.location = result.location;
     this.leafvalues.Description = result.Description;
   }
-  constructor(private uploadService: UploadService, private router: Router) {
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      const responsePath = JSON.parse(response);
-      console.log(response, responsePath);
-      this.leafvalues.listofimages.push(responsePath);
-      this.leafvalues.noreccoimages.push(responsePath);
-    };
-  }
-  changeUnknown(value){
-    this.unknown = value;
-    console.log(this.unknown);
-  }
-  ngOnInit() {
-  }
-
 }
