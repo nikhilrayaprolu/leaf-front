@@ -19,6 +19,7 @@ import { SignupComponent } from './signup/signup.component';
 import { ManageusersComponent } from './manageusers/manageusers.component';
 import { PasswordComponent } from './password/password.component';
 import {HashLocationStrategy, Location, LocationStrategy} from '@angular/common';
+import { UnknownComponent } from './unknown/unknown.component';
 
 const appRoutes: Routes = [
   {path: '', component: DashboardComponent},
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
   {path: 'leafedit/:id', component: LeafeditComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  {path: 'unknown', component: UnknownComponent, canActivate: [AuthGuard]},
   {path: 'password', component: PasswordComponent, canActivate: [AuthGuard]},
   { path: '**', redirectTo: '' }
 ];
@@ -40,6 +42,7 @@ const appRoutes: Routes = [
     SignupComponent,
     ManageusersComponent,
     PasswordComponent,
+    UnknownComponent,
   ],
   imports: [
     BrowserModule,

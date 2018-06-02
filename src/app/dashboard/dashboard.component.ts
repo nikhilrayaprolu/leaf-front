@@ -44,6 +44,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private uploadService: UploadService, private router: Router, private activatedroute: ActivatedRoute, private authentication: AuthenticationService) {
     this.activatedroute.queryParams.subscribe(query => {
+      if(query['type'] != undefined)
+        this.type = query['type'];
       if(this.checkuserloggedin())
         {
           this.logged = "col-sm-3";
@@ -91,7 +93,6 @@ export class DashboardComponent implements OnInit {
       this.family = res;
       this.all_families=res;
     });
-    console.log(this.family);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   searchFamily(value){
@@ -271,6 +272,5 @@ export class DashboardComponent implements OnInit {
     return styles;
   }
   ngOnInit() {
-
   }
 }

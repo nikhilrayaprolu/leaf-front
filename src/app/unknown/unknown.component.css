@@ -7,53 +7,9 @@
 .photo-list{
   padding: 3vh 5vw;
 }
-.name-list{
-  padding: 3vh 2vw;
-  max-height: 80vh;
-  overflow-y: auto;
-}
 .edit-list{
-  padding: 3vh 4vw 3vh 0vw;
+  padding: 3vh 1vw 3vh 2vw;
 }
-.search-catalogue{
-  margin: 0vh 38vw;
-  max-width: 20vw;
-}
-.dashboard{
-  padding: 5vh 10vw;
-}
-.reset{
-  margin-left: 40vw;
-  margin-top: 5vh;
-}
-html, body { 
-  height: 100%;
-  width:100%;
- }
-.pointer {
-  cursor: pointer;
-}
-.suggestions {
-  font-family: Arial, sans-serif;
-  font-size: 17px;
-  margin-left: 2.4%;
-  display: block;
-}
-
-.query-suggestions:hover {
-  background: #E3E3E3;
-}
-
-.suggestion-box {
-  width: 634px;
-  max-width: 100%;
-  border: 1px solid rgba(150,150,150,0.3);
-  background-color: white;
-  margin-top: 47px;
-  margin-left: -1px;
-  position: absolute;
-}
-
 @media screen and (max-width: 767px) {
   .suggestion-box {
     width: 95.2vw;
@@ -158,14 +114,11 @@ figure {
     border: 1px black;
     border-style: solid;
     width: 15.1vw;
-    height: 25vh;
+    height: 18.2vh;
 }
 figure img{
   width: 15vw;
   height: 18vh;
-}
-.no-caption{
-  height: 18.2vh;
 }
 figure figcaption {
   padding: 2px;

@@ -1,4 +1,10 @@
 <div>
+  <div class="row search-catalogue" *ngIf="showleaftypes!=0 &&type==1">
+        <div class="form-group has-feedback">
+        <input type="text" class="form-control col-md-3" placeholder ="Search Species" [(ngModel)]="search" (keyup)=searchFamily(search) /> 
+        <i class ="glyphicon glyphicon-remove-circle form-control-feedback" (click)=clearSearch()></i> 
+        </div>
+  </div>
   <div class ="row">
     <div class="row options-list" *ngIf="showleaftypes==1 && type!= 1">
       <div [ngClass] = "optionslogged">
