@@ -81,7 +81,7 @@ leafvalues: any = {
           console.log('Onwards to deletion');
           this.uploadService.deleteUnknown(this.leaflist).subscribe(res => {  
           }); 
-          this.router.navigate(['/'],{ queryParams: {present: 1, imageid: res.imageid, usertype: 'Global',level:'All', annotation:'All', tagging: 'false', disease:'All', type: 2}});
+        window.location.reload();
       } 
       });
     }
