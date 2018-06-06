@@ -1,5 +1,14 @@
 <div class = "container">
-<h1 class="text-center"> Manage Users </h1>
+  <h1 class ="text-center">Control Panel </h1>
+<div class = "text-center">
+  <button type="button" class="btn btn-primary" *ngIf = "isPresent('admin')" (click) = "changeView('sign')">Approve New Users</button>
+  <button type="button" class="btn btn-primary" *ngIf = "isPresent('admin')" (click) = "changeView('privilege')" >Change User Privileges</button>
+  <button type="button" class="btn btn-primary" (click) = "changeView('upload')">Approve New Uploads</button>
+  <button type="button" class="btn btn-primary" (click) = "changeView('log')" >View Logs</button>
+</div>
+
+<div *ngIf = "approvesignup">
+<h1 class="text-center"> Approve new sign ups! </h1>
 <h2> Requests: </h2>
 <h3 class="text-center" *ngIf="newusers?.length == 0"> No new requests! </h3>
 <table class="table table-hover" *ngIf="newusers?.length>0">
@@ -31,7 +40,10 @@
     </tr>  
   </tbody>
 </table>
-<h2>Current Users:</h2>         
+</div>
+
+<div *ngIf ="changeuser">
+<h2>Change Privileges of Users:</h2>         
   <div *ngIf="all_users?.length>0" class="form-group has-feedback">
   <input type="text" class="form-control search col-md-3" placeholder ="Search Users" [(ngModel)]="search" (keyup)=searchUsers(search) /> 
   <i class ="glyphicon glyphicon-remove-circle search form-control-feedback" (click)=clearSearch()></i> 
@@ -75,4 +87,28 @@
     </tr>  
   </tbody>
 </table>
+</div>
+</div>
+
+<div *ngIf = "approveupload" class ="container">
+<h1 class="text-center"> Approve new uploads! </h1>
+  <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
+  <div *ngFor="let item of items;let i = index">
+    <div class="card card-inverse card-info">
+      <figure>
+      <a [href]='(image_path+item.leafname)' [attr.data-lightbox]="'image'+i">
+      <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
+      </a>
+    </figure>
+    <figcaption *ngIf = "item.approved=='true'" class="text-center" style ="color:green">
+      <span class="glyphicon glyphicon-ok"></span> Approved.
+    </figcaption>
+    <figcaption *ngIf = "item.approved!='true'" class="text-center" style ="color:red">
+      <span class="glyphicon glyphicon-remove"></span> Unapproved.
+    </figcaption>
+      <div class="card-footer">
+        <button (click)="imageprofile(i)">View/Edit</button>
+        <button (click)="approveUpload(item._id)">Approve</button>
+      </div>  
+</div>
 </div>

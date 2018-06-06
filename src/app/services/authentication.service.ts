@@ -23,19 +23,6 @@ export class AuthenticationService {
       return false;
     }
   }
-
-  checkifadmin(){
-    if(this.usertype == "admin")
-      return true;
-    else 
-      return false;
-  }
-  checkifexpert(){
-    if(this.usertype == "expert")
-      return true;
-    else 
-      return false;
-  }
   changePassword(username, password){
    return this.http.post(this.server + '/authentication/password',{ username: username, password: password }).map((response: Response) => {
    if(response.json().success === true)
@@ -67,7 +54,6 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    console.log('called');
     // clear token remove user from local storage to log user out
     this.token = null;
     localStorage.removeItem('currentUser');

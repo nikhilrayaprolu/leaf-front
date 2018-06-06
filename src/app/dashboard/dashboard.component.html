@@ -96,6 +96,12 @@
             <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
             </a>
           </figure>
+          <figcaption *ngIf = "item.approved=='true' && type!=1" class="text-center" style ="color:green">
+            <span class="glyphicon glyphicon-ok"></span> Approved.
+          </figcaption>
+          <figcaption *ngIf = "item.approved!='true' && type!=1" class="text-center" style ="color:red">
+            <span class="glyphicon glyphicon-remove"></span> Unapproved.
+          </figcaption>
             <div class="card-footer">
               <button (click)="annotateimage(i)" *ngIf="presentimageannotated != i && checkuserloggedin() && (type==2||type==3)">Annotate</button>
               <button (click)="imageprofile(i)" *ngIf="checkuserloggedin() && type == 2">Edit</button>

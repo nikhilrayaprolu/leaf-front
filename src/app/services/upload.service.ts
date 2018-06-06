@@ -160,4 +160,22 @@ export class UploadService {
         return res.json().success;
       });
   }
+
+  getUserScores(){
+    return this.http.get(this.server + '/userscore').map(res => {
+        return res.json();
+      });
+  }
+  getUnapprovedUploads(){
+    return this.http.get(this.server + '/unapproved').map(res => {
+        return res.json();
+      });
+  }
+  approveUpload(id){
+        var user = JSON.parse(localStorage.getItem('currentUser')).username;
+        console.log(user);
+    return this.http.post(this.server + '/approveupload', {id:id, user: user}).map(res => {
+        return res.json();
+      });
+  }
 }

@@ -63,7 +63,13 @@ export class DashboardComponent implements OnInit {
           this.family = res;
           this.all_families = res;
           if (query['imageid'])
-          this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(parseInt(query['imageid']));
+          { 
+            var index = this.family.map(function(e){return e._id; }).indexOf(parseInt(query['imageid']));
+            var temp = this.family[0];
+            this.family[0] = this.family[index];
+            this.family[index] = temp;
+            this.presentleaf = 0; 
+         }
         });
       } else {
         this.showleaftypes = 0;
@@ -106,7 +112,11 @@ export class DashboardComponent implements OnInit {
     }
     if(this.family.length > 0)
     {
-      this.presentleaf = this.family.map(function(e){return e._id; }).indexOf(this.family[0]._id);
+      var index = this.family.map(function(e){return e._id; }).indexOf(this.family[0]._id);
+      var temp = this.family[0];
+      this.family[0] = this.family[index];
+      this.family[index] = temp;
+      this.presentleaf = 0;
       this.searchdata.imageid = this.family[0]._id;
       if (this.showleaftypes === 1) {
         this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
@@ -161,6 +171,7 @@ export class DashboardComponent implements OnInit {
         this.items = res;
       });
     }
+          console.log(this.items);
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
   }
   imageprofile(id) {

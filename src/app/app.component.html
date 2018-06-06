@@ -10,10 +10,10 @@
       <li><a [routerLink]="['upload']">Upload</a></li>
     </ul>
     <ul class="nav navbar-nav" >
-      <li><a [routerLink]="['unknown']" *ngIf="checkifexpert() || checkifadmin()">Unknown Leaves</a></li>
+      <li><a [routerLink]="['unknown']" *ngIf="checkloggedin() && isPresent('expert')">Unknown Leaves</a></li>
     </ul>
     <ul class="nav navbar-nav" >
-      <li><a [routerLink]="['manage']" *ngIf="checkifadmin()">Manage Users</a></li>
+      <li><a [routerLink]="['manage']" *ngIf="checkloggedin() && isPresent('expert')">Control Panel</a></li>
     </ul>
     <ul class="nav navbar-nav" style="float: right">
       <li><a [routerLink]="['password']" *ngIf="checkloggedin()">Change Password</a></li>
