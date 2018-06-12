@@ -1,20 +1,24 @@
 	<h1 class ="text-center"> Unknown Leaves </h1>
 <div class="col-sm-3 col-md-3 edit-list" *ngIf = "items?.length">
   <h2> Mark and add species details! </h2>
+    <h4 class = "text-center"><b> Hover over each field to get related instructions! </b></h4>
   <form ngNativeValidate>
     <div class = "form-group">
       <label for = "scientificName">Scientific Name</label>
-      <input type = "text" class = "form-control" id = "scientificName" required
+      <input type = "text" class = "form-control" title="Scientific name of the plant in the image.
+" id = "scientificName" required
              [(ngModel)] = "leafvalues.scientificName" (keyup)="searchscientificName($event)" name = "scientificName">
     </div>
     <div class = "form-group">
       <label for = "commonName">Common Name</label>
-      <input type = "text" class = "form-control" id = "commonName" required
+      <input type = "text" class = "form-control" title = "Common name of the plant in the image. Multiple common names can be written separated with a comma.
+" id = "commonName" required
              [(ngModel)] = "leafvalues.commonName" (keyup)="searchcommonName($event)" name = "commonName">
     </div>
     <div class = "form-group">
       <label for = "family">Family</label>
-      <input type = "text" class = "form-control" id = "family"
+      <input type = "text" class = "form-control" title ="Family name of the plant in the image.
+" id = "family"
              [(ngModel)] = "leafvalues.family" name = "family">
     </div>
     <div *ngIf="autoresults">
@@ -26,7 +30,12 @@
     <div class="form-group">
       <label>Picture Type</label>
       <div class="input-group">
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required>
+        <select class="selectpicker form-control" title ="For ease of convenience, we divide the pictures into four categories/levels.
+Level-0: A picture of the leaf placed on a paper
+Level-1: A picture of the leaf in the wild(in it’s natural environment)
+Level-2: A picture showing the bunch of leaves(cluster of leaves)
+Level-3: A distant view of the tree
+" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required>
           <option value="Level0">Level 0</option>
           <option value="Level1">Level 1</option>
           <option value="Level2">Level 2</option>
@@ -37,7 +46,8 @@
     <div class="form-group">
       <label>Shape:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.leafShape" name="leafShape" required>
+        <select class="selectpicker form-control" title = "Shape of the leaf of the plant in the picture.
+" [(ngModel)] = "leafvalues.leafShape" name="leafShape" required>
               <option value="Cordate">Cordate</option>
               <option value="Cuneate">Cuneate</option>
               <option value="Elliptical">Elliptical</option>
@@ -58,7 +68,8 @@
     <div class="form-group">
       <label>Leaf Margin</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="completed" [(ngModel)] = "leafvalues.leafMargin">
+        <select class="selectpicker form-control" title = "Margin of the leaf of the plant in the picture.
+" name="completed" [(ngModel)] = "leafvalues.leafMargin">
           <option value="Entire">Entire</option>
           <option value="Dentate">Dentate</option>
           <option value="Crenate">Crenate</option>
@@ -70,7 +81,8 @@
     <div class="form-group">
       <label>Leaf Division:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="division" [(ngModel)] = "leafvalues.leafDivision">
+        <select class="selectpicker form-control" title ="Leaf division of the plant in the picture.
+" name="division" [(ngModel)] = "leafvalues.leafDivision">
           <option value="Simple">Simple</option>
           <option value="Compound">Compound</option>
         </select>
@@ -79,7 +91,7 @@
     <div class="form-group">
       <label>Season:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="season" [(ngModel)] = "leafvalues.pictureSeason">
+        <select class="selectpicker form-control" title ="The season in which the current picture is taken." name="season" [(ngModel)] = "leafvalues.pictureSeason">
           <option value="Spring">Spring</option>
           <option value="Summer">Summer</option>
           <option value="Monsoon">Monsoon</option>
@@ -91,7 +103,8 @@
     <div class="form-group">
       <label>Leaf Health:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="health" [(ngModel)] = "leafvalues.leafHealth">
+        <select class="selectpicker form-control" title = "Indicates whether the uploaded leaf in the picture is healthy or not.
+" name="health" [(ngModel)] = "leafvalues.leafHealth">
           <option value="Good">Good</option>
           <option value="Not Good">Not Good</option>
         </select>
@@ -99,28 +112,32 @@
     </div>
     <div class = "form-group" *ngIf="leafvalues.leafHealth == 'Not Good'">
       <label for = "Disease">Disease</label>
-      <input type = "text" class = "form-control" id = "Disease" required
+      <input type = "text" class = "form-control" title = "Disease that the leaf in the picture has.
+" id = "Disease" required
              [(ngModel)] = "leafvalues.Disease" name = "Disease">
     </div>
     <div class = "form-group">
       <label for = "location">Location</label>
-      <input type = "text" class = "form-control" id = "scientificName" required
+      <input type = "text" class = "form-control" title = "The location where the image was taken." id = "scientificName" required
              [(ngModel)] = "leafvalues.location" name = "location">
     </div>
     <div class = "form-group">
       <label for = "Description">Description</label>
-      <input type = "text" class = "form-control" id = "Description" required
+      <input type = "text" class = "form-control" title = "Details about the shape of the plant, it’s preferred geographical area, type of propagation, etc.
+" id = "Description" required
              [(ngModel)] = "leafvalues.Description" name = "Description">
     </div>
     <div class = "form-group">
       <label for = "Utility">Utility</label>
-      <input type = "text" class = "form-control" id = "Utility" required
+      <input type = "text" class = "form-control" title = "The usage of the plant. It could be medicinal, daily or any other kind of usages.
+" id = "Utility" required
              [(ngModel)] = "leafvalues.Utility" name = "Utility">
     </div>
     <div class="form-group">
       <label>Annotation Complete:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete">
+        <select class="selectpicker form-control" title ="When you upload a single image, we need you to tell you where the leaf(or any important part) is in the image by drawing a rectangle around it. If this box is unchecked, the relevant images will shown in 'Annotate new Images section'
+" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete">
           <option value="true">yes</option>
           <option value="false">no</option>
         </select>
@@ -129,7 +146,8 @@
     <div class="form-group">
       <label>Tagging Complete:</label>
       <div class="input-group">
-        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.TaggingComplete">
+        <select class="selectpicker form-control" title = "When you fill all the tags in the form correctly, you can check this tag to show that these entries don’t need any further correction. Entries that don’t have this tag checked will be shown in the 'Tag new Images' section.
+" name="Annotation" [(ngModel)] = "leafvalues.TaggingComplete">
           <option value="true">yes</option>
           <option value="false">no</option>
         </select>

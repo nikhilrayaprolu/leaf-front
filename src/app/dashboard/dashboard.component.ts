@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   totalunannotatedspecies = 0;
   totaldieseasespecies = 0;
   presentleaf = -1;
+  gotop = 0;
   dashboardstatistics = {
     familycount: 0,
     unannotated: 0,
@@ -65,10 +66,15 @@ export class DashboardComponent implements OnInit {
           if (query['imageid'])
           { 
             var index = this.family.map(function(e){return e._id; }).indexOf(parseInt(query['imageid']));
-            var temp = this.family[0];
-            this.family[0] = this.family[index];
-            this.family[index] = temp;
-            this.presentleaf = 0; 
+            if(query['present'] == 1 && this.gotop)
+            {
+             var temp = this.family[0];
+             this.family[0] = this.family[index];
+             this.family[index] = temp;
+             this.presentleaf = 0;
+            } 
+            else
+              this.presentleaf = index;
          }
         });
       } else {
@@ -113,10 +119,15 @@ export class DashboardComponent implements OnInit {
     if(this.family.length > 0)
     {
       var index = this.family.map(function(e){return e._id; }).indexOf(this.family[0]._id);
-      var temp = this.family[0];
-      this.family[0] = this.family[index];
-      this.family[index] = temp;
-      this.presentleaf = 0;
+      if(this.showleaftypes ==1)
+      {     
+            var temp = this.family[0];
+            this.family[0] = this.family[index];
+            this.family[index] = temp;
+            this.presentleaf = 0;
+      }
+      else
+      this.presentleaf = index;
       this.searchdata.imageid = this.family[0]._id;
       if (this.showleaftypes === 1) {
         this.uploadService.getLeavesOfFamily(this.family[0]._id, 0, 50, 'Not', this.searchdata.usertype, this.searchdata.level, this.searchdata.annotation, this.searchdata.disease, this.searchdata.tagging).subscribe(res => {
@@ -237,8 +248,9 @@ export class DashboardComponent implements OnInit {
   }
   savefamily(family) {
     this.uploadService.updatefamily(this.family[this.presentleaf]).subscribe(res => {
-    window.location.reload();
-    });
+    var searchdata = {'present': 1, 'imageid': this.family[this.presentleaf]['_id'], usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All', 'type': this.type};
+    this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
+        });
     this.presentedit = 1;
   }
   deletefamily(){
@@ -249,7 +261,7 @@ export class DashboardComponent implements OnInit {
   this.uploadService.deletefamily(this.family[this.presentleaf]).subscribe(res => {
     this.uploadService.getAllFamily().subscribe(res => {
     this.family = res;
-    this.searchdata = {'present': 1, 'imageid': this.family[0]['_id'], usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All'}
+    var searchdata = {'present': 1, 'imageid': this.family[0]['_id'], usertype:'Global', level: 'All', annotation: 'All', disease: 'All', tagging: 'All', 'type': this.type};
     this.router.navigate(['/dashboard'], {queryParams: this.searchdata});
     });
     });
@@ -282,6 +294,13 @@ export class DashboardComponent implements OnInit {
     let styles = {'font-size': (value.length > 40)?'12px':((value.length > 30)?'13px':'15px')};
     return styles;
   }
+  changeFirst(value){
+    this.gotop = value;
+  }
   ngOnInit() {
+  $(document).ready(function(){
+    $(this).scrollTop(0);
+});
+
   }
 }

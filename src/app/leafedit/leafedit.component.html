@@ -45,7 +45,12 @@
     <div class="form-group">
       <label>Picture Type</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.pictureType}}</span>
-        <select class="selectpicker form-control" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required *ngIf="presentedit == 1">
+        <select class="selectpicker form-control" title ="For ease of convenience, we divide the pictures into four categories/levels.
+Level-0: A picture of the leaf placed on a paper
+Level-1: A picture of the leaf in the wild(in it’s natural environment)
+Level-2: A picture showing the bunch of leaves(cluster of leaves)
+Level-3: A distant view of the tree
+" [(ngModel)] = "leafvalues.pictureType" name="pictureType" required *ngIf="presentedit == 1">
           <option value="Level0">Level 0</option>
           <option value="Level1">Level 1</option>
           <option value="Level2">Level 2</option>
@@ -60,7 +65,7 @@
       <label>Season:</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.pictureSeason}}</span>
 
-        <select class="selectpicker form-control" name="season" [(ngModel)] = "leafvalues.pictureSeason" *ngIf="presentedit == 1">
+        <select class="selectpicker form-control" title ="The season in which the current picture is taken." name="season" [(ngModel)] = "leafvalues.pictureSeason" *ngIf="presentedit == 1">
           <option value="Spring">Spring</option>
           <option value="Summer">Summer</option>
           <option value="Monsoon">Monsoon</option>
@@ -74,7 +79,8 @@
     <div class="form-group">
       <label>Leaf Health:</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.leafHealth}}</span>
-        <select class="selectpicker form-control" name="health" [(ngModel)] = "leafvalues.leafHealth" *ngIf="presentedit == 1">
+        <select class="selectpicker form-control" title = "Indicates whether the uploaded leaf in the picture is healthy or not.
+" name="health" [(ngModel)] = "leafvalues.leafHealth" *ngIf="presentedit == 1">
           <option value="Good">Good</option>
           <option value="Not Good">Not Good</option>
         </select>
@@ -85,14 +91,15 @@
     <div class = "form-group">
       <label for = "Disease">Disease</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.Disease}}</span>
-      <input type = "text" class = "form-control" id = "Disease" required *ngIf="presentedit == 1"
+      <input type = "text" class = "form-control" title = "Disease that the leaf in the picture has.
+" id = "Disease" required *ngIf="presentedit == 1"
              [(ngModel)] = "leafvalues.Disease" name = "Disease">
 
     </div>
     <div class = "form-group">
       <label for = "location">Location</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.location}}</span>
-      <input type = "text" class = "form-control" id = "location" required *ngIf="presentedit == 1"
+      <input type = "text" class = "form-control" title = "The location where the image was taken." id = "location" required *ngIf="presentedit == 1"
              [(ngModel)] = "leafvalues.location" name = "location">
 
     </div>
@@ -100,7 +107,8 @@
       <label>Annotation Complete:</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.AnnotationComplete}}</span>
 
-        <select class="selectpicker form-control" name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete" *ngIf="presentedit == 1">
+        <select class="selectpicker form-control" title ="When you upload a single image, we need you to tell you where the leaf(or any important part) is in the image by drawing a rectangle around it. If this box is unchecked, the relevant images will shown in 'Annotate new Images section'
+"  name="Annotation" [(ngModel)] = "leafvalues.AnnotationComplete" *ngIf="presentedit == 1">
           <option value="true">yes</option>
           <option value="false">no</option>
         </select>
@@ -110,7 +118,8 @@
       <label>Tagging Complete:</label>
       <p><span *ngIf="presentedit == 0">{{leafvalues.TaggingComplete}}</span>
 
-        <select class="selectpicker form-control" name="Tagging" [(ngModel)] = "leafvalues.TaggingComplete" *ngIf="presentedit == 1">
+        <select class="selectpicker form-control" title = "When you fill all the tags in the form correctly, you can check this tag to show that these entries don’t need any further correction. Entries that don’t have this tag checked will be shown in the 'Tag new Images' section.
+" name="Tagging" [(ngModel)] = "leafvalues.TaggingComplete" *ngIf="presentedit == 1">
           <option value="true">yes</option>
           <option value="false">no</option>
         </select>

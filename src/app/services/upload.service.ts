@@ -13,9 +13,11 @@ export class UploadService {
   getunknownserver = this.server + '/getallunknown';
   userserver = this.server+'/allusers';
   approveserver = this.server+'/approve';
+  bulkapproveserver = this.server + '/bulkapprove';
   familyscientificserver = this.server + '/familybyscientific';
   familycommonserver = this.server + '/familybycommon';
   familyallserver = this.server + '/getAllFamily';
+  familyidserver = this.server + '/familybyid'
   leavesoffamily = this.server + '/leavesoffamily';
   leafserver = this.server + '/leafbyid';
   deleteLeafServer = this.server + '/leafdelete';
@@ -73,6 +75,12 @@ export class UploadService {
   getFamilyByCommonName(name) {
     return this.http
       .post(this.familycommonserver, {name: name}).map(res => {
+        return res.json();
+      });
+  }
+  getFamilyById(id) {
+    return this.http
+      .post(this.familyidserver, {id: id}).map(res => {
         return res.json();
       });
   }
@@ -175,6 +183,13 @@ export class UploadService {
         var user = JSON.parse(localStorage.getItem('currentUser')).username;
         console.log(user);
     return this.http.post(this.server + '/approveupload', {id:id, user: user}).map(res => {
+        return res.json();
+      });
+  }
+  approveBulkUpload(leaves){
+        var user = JSON.parse(localStorage.getItem('currentUser')).username;
+        console.log(user);
+    return this.http.post(this.server + '/bulkapprove', {leaves:leaves, user: user}).map(res => {
         return res.json();
       });
   }

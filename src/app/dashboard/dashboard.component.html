@@ -60,7 +60,7 @@
     <div class ="photo-list"  *ngIf="showleaftypes == 2">
       <h1 class ="text-center"> List of Species </h1>
       <div *ngFor="let item of family;let i = index">
-        <div (click)="FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
+        <div (click)="changeFirst(1); FamilyLeaves(item._id)" *ngIf="item.leaves[0]">
           <figure class = "pointer">
           <img [src]='image_path + item.leaves[0].leafname' (error) = "changeSource($event, item.leaves[0].leafname)"  [ngClass]="'image'+i" *ngIf="item.leaves[0].leafname" >
           <figcaption>
@@ -78,7 +78,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let name of family; let i =index" [ngClass] = "highlight(i)" class="query-suggestions" (click)="FamilyLeaves(name._id)">
+      <tr *ngFor="let name of family; let i =index" [ngClass] = "highlight(i)" class="query-suggestions" (click)="changeFirst(0); FamilyLeaves(name._id)">
         <td *ngIf = "name.leaves?.length"><a class="suggestions pointer">{{name.scientificName}}</a></td>
       </tr>
       </tbody>
@@ -122,20 +122,23 @@
         <div class = "form-group">
           <label for = "scientificName">Scientific Name</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].scientificName}}</span>
-            <input type = "text" class = "form-control" id = "scientificName" required *ngIf="presentedit == 0"
+            <input type = "text" class = "form-control" title="Scientific name of the plant in the image.
+" id = "scientificName" required *ngIf="presentedit == 0"
                    [(ngModel)] = "family[presentleaf].scientificName" (keyup)="searchscientificName($event)" name = "scientificName">
         </div>
         <div class = "form-group">
           <label for = "commonName">Common Name</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].commonName}}</span>
-            <input type = "text" class = "form-control" id = "commonName" required *ngIf="presentedit == 0"
+            <input type = "text" class = "form-control" title = "Common name of the plant in the image. Multiple common names can be written separated with a comma.
+" id = "commonName" required *ngIf="presentedit == 0"
                    [(ngModel)] = "family[presentleaf].commonName" (keyup)="searchcommonName($event)" name = "commonName">
 
         </div>
         <div class="form-group">
           <label>Shape:</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafShape}}</span>
-            <select class="selectpicker form-control" [(ngModel)] = "family[presentleaf].leafShape" name="leafShape" required *ngIf="presentedit == 0">
+            <select class="selectpicker form-control" title = "Shape of the leaf of the plant in the picture.
+" [(ngModel)] = "family[presentleaf].leafShape" name="leafShape" required *ngIf="presentedit == 0">
               <option value="Cordate">Cordate</option>
               <option value="Cuneate">Cuneate</option>
               <option value="Elliptical">Elliptical</option>
@@ -157,7 +160,8 @@
           <label>Leaf Margin</label>
           <p><span *ngIf="presentedit ==1">{{family[presentleaf].leafMargin}}</span>
 
-            <select class="selectpicker form-control" name="completed" [(ngModel)] = "family[(presentleaf)].leafMargin" *ngIf="presentedit == 0">
+            <select class="selectpicker form-control" title = "Margin of the leaf of the plant in the picture.
+" name="completed" [(ngModel)] = "family[(presentleaf)].leafMargin" *ngIf="presentedit == 0">
               <option value="Entire">Entire</option>
               <option value="Crenate">Crenate</option>
               <option value="Dentate">Dentate</option>
@@ -169,7 +173,8 @@
         <div class="form-group">
           <label>Leaf Division:</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].leafDivision}}</span>
-            <select class="selectpicker form-control" name="division" [(ngModel)] = "family[presentleaf].leafDivision" *ngIf="presentedit == 0">
+            <select class="selectpicker form-control" title ="Leaf division of the plant in the picture.
+" name="division" [(ngModel)] = "family[presentleaf].leafDivision" *ngIf="presentedit == 0">
               <option value="Simple">Simple</option>
               <option value="Compound">Compound</option>
             </select>
@@ -178,21 +183,24 @@
         <div class = "form-group">
           <label for = "Description">Description</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].Description}}</span>
-            <input type = "text" class = "form-control" id = "Description" required *ngIf="presentedit == 0"
+            <input type = "text" class = "form-control" title = "Details about the shape of the plant, it’s preferred geographical area, type of propagation, etc.
+" id = "Description" required *ngIf="presentedit == 0"
                    [(ngModel)] = "family[presentleaf].Description" name = "Description">
             </p>
         </div>
         <div class = "form-group">
           <label for = "family">Family</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].family}}</span>
-            <input type = "text" class = "form-control" id = "family"
+            <input type = "text" class = "form-control" title ="Family name of the plant in the image.
+" id = "family"
                    [(ngModel)] = "family[presentleaf].family" name = "family" *ngIf="presentedit == 0">
             </p>
         </div>
         <div class = "form-group">
           <label for = "Utility">Utility</label>
           <p><span *ngIf="presentedit == 1">{{family[presentleaf].Utility}}</span>
-            <input type = "text" class = "form-control" id = "Utility"
+            <input type = "text" class = "form-control" title = "The usage of the plant. It could be medicinal, daily or any other kind of usages.
+" id = "Utility"
                    [(ngModel)] = "family[presentleaf].Utility" name = "Utility" *ngIf="presentedit == 0">
             </p>
         </div>
@@ -201,17 +209,20 @@
     <div *ngIf="showleaftypes==0">
     <main role="main" class="col-sm-12 ml-sm-auto col-md-12 dashboard-wrapper">
       <h1 class= "text-center">Dashboard</h1>
+      <h4 class = "container" style = "font-style: italic; margin-top: 2vh">
+      With growing urbanization, we are losing our touch with the nature. Plants that are easily identifiable at one point of time by common people are becoming more and more the domain of experts. On a casual walk in our locality, we find a lot of plants around us. Sometimes when we are interested enough, we might be able to find an expert, but not all the times. To solve this issue, we created this platform for people to share the pictures of plants around them. An user can upload a picture of a plant and experts will identify them on our platform. This website is made with a goal of cataloging all the plants in India, starting with our very own locality of IIIT-H.
+    </h4>
       <section class="text-center placeholders dashboard">
         <div [ngClass] = "logged" class="placeholder pointer" (click)="getAllFamily(2); setType(1)" >
-          <img src="assets/images/catalogue.jpg" width="300" height="300" class="img-responsive" style = "margin:auto" alt="Generic placeholder thumbnail">
+          <img src="assets/images/catalogue.jpg" width="300" height="300" class="img-responsive" style = "margin:auto" alt="Catalogue">
           <h4>Catalogue</h4>
         </div>
         <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2); setType(2)" >
-          <img src="assets/images/tag.jpg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
+          <img src="assets/images/tag.jpg" width="300" height="300" class="img-responsive" alt="Tag New Images" >
           <h4>Tag New Images</h4>
         </div>
         <div class="col-6 col-sm-3 placeholder pointer" *ngIf="checkuserloggedin()" (click)="getAllUnAnnoted(2); setType(3)">
-          <img src="assets/images/annotate.svg" width="300" height="300" class="img-responsive" alt="Generic placeholder thumbnail" >
+          <img src="assets/images/annotate.svg" width="300" height="300" class="img-responsive" alt="Annotate new images" >
           <h4>Annotate New Images</h4>
         </div>
         <div [ngClass] = "logged">
