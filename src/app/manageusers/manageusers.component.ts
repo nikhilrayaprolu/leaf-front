@@ -24,6 +24,7 @@ export class ManageusersComponent implements OnInit {
   scores: any;
   items: any;
   search ='';
+  leaflist = [];
   constructor(private router:Router, private uploadService: UploadService){
     this.uploadService.getUsers('false').subscribe(res =>{
   		this.newusers = res;
@@ -35,7 +36,17 @@ export class ManageusersComponent implements OnInit {
     this.uploadService.getUserScores().subscribe(
     res => {this.scores = res; });
     this.uploadService.getUnapprovedUploads().subscribe(
-    res => {this.items = res;});
+    res => {
+    this.items = res;
+    this.items.forEach(function(item){
+      uploadService.getFamilyById(item.scientificName).subscribe(
+        res => {
+              item.scientificName = res[0].scientificName;
+              item.commonName = res[0].commonName;
+              console.log(item);
+        });
+    });
+    });
    }
    isPresent(value){
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -115,6 +126,23 @@ export class ManageusersComponent implements OnInit {
         window.location.reload();
     });
   }
+  approveMarked(){
+    this.uploadService.approveBulkUpload(this.leaflist).subscribe(res =>{
+      if(res.success)
+        window.location.reload();
+    });
+  }
+  addLeaf(value,i){
+    if($('.check'+i)[0].checked)
+    {
+      this.leaflist.push(value);
+    }
+    else{
+    var index = this.leaflist.indexOf(value);
+    if (index !== -1) this.leaflist.splice(index, 1);
+    }
+    console.log(this.leaflist);
+    }
   ngOnInit() {
     
   }

@@ -93,18 +93,19 @@
 <div *ngIf = "approveupload" class ="container">
 <h1 class="text-center"> Approve new uploads! </h1>
   <h2 *ngIf="!items?.length" class ="text-center"> No entries to display.</h2>
+  <button (click)="approveMarked()" style = "margin: 3vh 0vw  3vh 25vw">Approve Marked Leaves</button>
   <div *ngFor="let item of items;let i = index">
     <div class="card card-inverse card-info">
       <figure>
       <a [href]='(image_path+item.leafname)' [attr.data-lightbox]="'image'+i">
       <img [src]='image_path + item.leafname' (error) ="changeSource($event, item.leafname)" height="200px" class="card-img-top" [ngClass]="'image'+i" id="image{{i}}">
       </a>
-    </figure>
-    <figcaption *ngIf = "item.approved=='true'" class="text-center" style ="color:green">
-      <span class="glyphicon glyphicon-ok"></span> Approved.
-    </figcaption>
-    <figcaption *ngIf = "item.approved!='true'" class="text-center" style ="color:red">
-      <span class="glyphicon glyphicon-remove"></span> Unapproved.
+    </figure> 
+    <figcaption *ngIf = "item.approved!='true'" class="text-center">
+      <span class="glyphicon glyphicon-remove" style ="color:red"> Unapproved.</span> <br>
+      <b>{{item.scientificName}}</b> <br>
+      <b>({{item.commonName}})</b> <br>
+      Mark: <input type="checkbox" [ngClass]="'check'+i"name="addleaf" (click)="addLeaf(item._id,i)">
     </figcaption>
       <div class="card-footer">
         <button (click)="imageprofile(i)">View/Edit</button>
