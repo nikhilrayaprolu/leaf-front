@@ -3,6 +3,7 @@ import {UploadService} from '../services/upload.service';
 import {ActivatedRoute, Router} from "@angular/router";
 import {server} from "../config";
 import {AuthenticationService} from "../services/authentication.service";
+import { Chart } from 'chart.js';
 declare var anno: any;
 declare var jquery:any;
 declare var $ :any;
@@ -33,6 +34,11 @@ export class DashboardComponent implements OnInit {
     annotated: 0,
     diseased: 0,
     userleaves: 0,
+    totalleaves: 0,
+    leafday: 0,
+    leafweek: 0,
+    leafmonth: 0,
+    leafyear: 0
   };
   logged ="col-sm-6";
   optionslogged ="col-md-4"
@@ -94,8 +100,96 @@ export class DashboardComponent implements OnInit {
       this.dashboardstatistics.familycount = res.familycount;
       this.dashboardstatistics.unannotated = res.unannotated;
       this.dashboardstatistics.annotated = res.annotated;
+      this.dashboardstatistics.totalleaves = this.dashboardstatistics.unannotated + this.dashboardstatistics.annotated; 
       this.dashboardstatistics.diseased = res.diseased;
       this.dashboardstatistics.userleaves = res.userleaves;
+      this.dashboardstatistics.leafday = res.leafday;
+      this.dashboardstatistics.leafweek = res.leafweek;
+      this.dashboardstatistics.leafmonth = res.leafmonth;
+      this.dashboardstatistics.leafyear = res.leafyear;
+
+
+    var canvas = <HTMLCanvasElement> document.getElementById('myChart1')
+    var ctx =  canvas.getContext('2d');
+    var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+            labels: ['Species', 'Leaves', 'Unannotated Leaves', 'Annotated leaves', 'Diseased leaves', 'My leaves'],
+            datasets: [{
+                label: 'Quanitity',
+                data: [this.dashboardstatistics.familycount, this.dashboardstatistics.totalleaves,this.dashboardstatistics.unannotated, this.dashboardstatistics.annotated, this.dashboardstatistics.diseased, this.dashboardstatistics.userleaves],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+                scaleFontColor: "#ff0000",
+            }]
+        },
+        options: {
+
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            responsive: false
+        }
+    });
+
+    var canvas2 = <HTMLCanvasElement> document.getElementById('myChart2');
+    var ctx2 =  canvas2.getContext('2d');
+    var myBarChart = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+            labels: ['Leaves last day', 'Leaves last week', 'Leaves last month', 'Leaves last year'],
+            datasets: [{
+                label: 'Quanitity',
+                data: [this.dashboardstatistics.leafday, this.dashboardstatistics.leafweek, this.dashboardstatistics.leafmonth, this.dashboardstatistics.leafyear],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1,
+                scaleFontColor: "#ff0000",
+            }]
+        },
+        options: {
+
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            },
+            responsive: false
+        }
+  });
+
+    
     });
   }
   getAllFamily(num) {
@@ -300,7 +394,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
   $(document).ready(function(){
     $(this).scrollTop(0);
-});
-
+  }); 
   }
 }

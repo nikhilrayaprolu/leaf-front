@@ -225,32 +225,13 @@
           <img src="assets/images/annotate.svg" width="300" height="300" class="img-responsive" alt="Annotate new images" >
           <h4>Annotate New Images</h4>
         </div>
+      </section>
+      <h1 class="text-center chart-head">Statistics</h1>
+      <section class ="charts">
         <div [ngClass] = "logged">
-        <div>
-          <h4>Total Number of Species</h4>
-          <p>{{dashboardstatistics.familycount}}</p>
-        </div>
-        <div>
-          <h4>Total Annotated Leaves</h4>
-          <p>{{dashboardstatistics.annotated}}</p>
-          <span class="text-muted"></span>
-        </div>
-        <div>
-          <h4>Partially annotated leaves</h4>
-          <p>{{dashboardstatistics.unannotated}}</p>
-          <span class="text-muted"></span>
-        </div>
-        <div>
-          <h4>Diseased leaves</h4>
-          <p>{{dashboardstatistics.diseased}}</p>
-          <span class="text-muted"></span>
-        </div>
-        <div>
-          <h4>My leaves</h4>
-          <p>{{dashboardstatistics.userleaves}}</p>
-          <span class="text-muted"></span>
-        </div>
-        </div>
+          <canvas id="myChart1" class ="graph"></canvas>
+          <canvas id="myChart2" class ="graph"></canvas>
+      </div>
       </section>
     </main>
     </div>
