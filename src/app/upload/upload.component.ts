@@ -37,6 +37,7 @@ export class UploadComponent implements OnInit {
   fillallfields = 0;
   autoresults: any;
   unknown = -1;
+  imagePreview = 0;
   public uploader: FileUploader = new FileUploader({url: URL});
   public hasBaseDropZoneOver = false;
   public hasAnotherDropZoneOver = false;
@@ -109,6 +110,10 @@ export class UploadComponent implements OnInit {
   changeUnknown(value){
     this.unknown = value;
     console.log(this.unknown);
+  }
+  changeImagePreview(value)
+  {
+    this.imagePreview = value;
   }
   ngOnInit() {
   }

@@ -21,6 +21,7 @@
 }
 .dashboard{
   padding: 5vh 10vw;
+  margin-left: 15vw;
 }
 .reset{
   margin-left: 40vw;
@@ -174,3 +175,16 @@ figure figcaption {
 .glyphicon {
       pointer-events: all;
     }
+.charts{
+  display:block;
+  clear: both;
+  margin-left: 25vw;
+}
+.graph{
+  width: 50vw;
+  height: 50vh;
+}
+.chart-head{
+  clear: both;
+  margin-top: 30vh;
+}

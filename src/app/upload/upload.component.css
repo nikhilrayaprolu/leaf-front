@@ -42,3 +42,27 @@ input[type=file]{
 a {
   text-decoration: none;
 }
+.level{
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+}
+.leaf-level{
+  margin-left: 12vw;
+}
+figure{
+  display: inline-block;
+  margin-right: 1vw;
+  float:left;
+  text-align: center;
+}
+.form-element,.input-group{
+  display: inline-block;
+  width: 20vw;
+}
+.info{
+  display: inline-block;
+}
+img{
+  vertical-align: middle;
+}

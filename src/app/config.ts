@@ -1,2 +1,2 @@
-export let server = 'http://localhost:3002';
+export let server = 'http://preon.iiit.ac.in/leaf';
 
